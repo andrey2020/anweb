@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<p:panel id="exPanel">
+    <h:panelGrid columns="1" style="width: 100%;">
+        <svg 
+           version="1.1"
+           id="svg2534"
+           height="21px">
+            
+
+            <path
+                d="m 10.5,5.2283 0,4.38942 4.5976,0 0,0.77154 -4.5976,0 0,4.7692 -0.8838,0 0,-4.7692 -4.5977,0 0,-0.77154 4.5977,0 0,-4.38942 0.8838,0 z"
+                id="plus"
+                fill="#{applicationController.selectedProfile.getMainColorSVG()}"
+                fill-rule="evenodd"
+                stroke="none"
+            />
+            <line x1="30" y1="20" x2="200" y2="20" style="stroke:rgb(0,0,0);stroke-width:1" />
+
+
+            <text x="30" y="14" id="_0"  fill="black">#{msg['experience']}</text>
+        </svg>
+        
+        <c:forEach items="#{applicationController.selectedProfile.getSelectedProfileDetails().getExperiencesSort()}" var="item" >
+            
+                
+                <svg   version="1.1" id="svg25344"
+                      style="margin-bottom: -8px; width: 100%; height: #{((item.description.length()/100 * 18) + 90)}px;">
+
+                    
+                    <line x1="10" y1="0" x2="10" y2="#{((item.description.length()/100 * 18) + 90)}" style="stroke:rgb(0,0,0);stroke-width:1" />
+                    <text x="25" y="30" id="_0"  fill="black">#{item.getStartDateFormat()}&#160; — </text>
+                    <text x="105" y="30" id="_0"  fill="black">#{item.getEndDateFormat()}</text>
+                    
+                    <text x="200" y="30" id="_0"  fill="#{applicationController.selectedProfile.getMainColorSVG()}">#{item.getBusinesName()}</text>
+                    <text x="200" y="50" id="_0"  fill="black">#{item.getJobTitle()}</text>
+                    
+                    <circle class="circ"
+                       cx="10"
+                       cy="25"
+                       r="7"
+
+                       id="_1"
+                       fill="#000000"
+                       stroke="#000000"
+                       stroke-width="0" />
+                    <circle class="circ"
+                       cx="10"
+                       cy="25"
+                       r="4.9"
+
+                       id="_2"
+                       fill="none"
+                       stroke="#ffffff"
+                       stroke-width="2.9" />
+                    
+                    
+                    <foreignObject x="200" y="65" width="700" height="#{((item.description.length()/100 * 18) + 40)}">
+                        #{item.getDescription()}
+                    </foreignObject>
+                    
+
+                    
+
+                    
+                </svg>
+             
+
+
+
+        </c:forEach>
+
+    </h:panelGrid>
+</p:panel>
+
+</ui:composition>

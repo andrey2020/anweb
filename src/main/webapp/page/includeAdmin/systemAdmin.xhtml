@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+
+       <style>
+          .sessionData{
+            max-width: 100% !important;
+            min-width: 100% !important;
+            min-height: 50px;
+            width: 100% !important;
+            padding: 0px;
+        }
+
+    </style>
+    
+<h:form>
+    <p:tabView>
+        <p:tab>
+            <f:facet name="title">
+                <h:outputText value=" Monitor" class="fa fa-black fa-desktop"/>
+            </f:facet>
+            
+            <p:dataTable id="monitorSession"
+                         value="#{systemController.getHttpSessionList()}"
+                         var="sess"
+                        paginator="true"
+                        rows="10"
+                        sortMode="multiple"
+                        rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                         >
+                <p:column style="width:16px">
+                    <p:rowToggler />
+                </p:column>
+                <p:column sortBy="#{sess.getId()}" headerText="ID">
+                    <h:outputText value="#{sess.getId()}" />
+                </p:column>
+
+                <p:column headerText="Create" sortBy="#{sess.creationTime}" style="width: 100px;">
+                    <h:outputText value="#{systemController.getDateByLong(sess.creationTime)}" />
+                </p:column>
+                <p:column headerText="Last Accessed Time" sortBy="#{sess.lastAccessedTime}" style="width: 100px;">
+                    <h:outputText value="#{systemController.getDateByLong(sess.lastAccessedTime)}" />
+                </p:column>
+                <p:column headerText="Login Name" sortBy="#{sess.getAttribute('loginname')}">
+                    <h:outputText value="#{sess.getAttribute('loginname')}" />
+                </p:column>
+                <p:column headerText="Language" sortBy="#{sess.getAttribute('lang')}" style="width: 30px;">
+                    <h:outputText value="#{sess.getAttribute('lang')}" />
+                </p:column>
+
+                <p:column style="width: 40px;">
+                     <p:commandButton 
+                        actionListener="#{sess.invalidate()}"
+                        icon="fa fa-times"
+                        rendered="#{!systemController.isMySession(sess.getId())}"
+                        update="monitorSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                </p:column>
+                
+                <p:rowExpansion styleClass="TestClass">
+                    <h:panelGrid  columns="1" style="width:100%" >
+                        <f:facet name="header">
+                            <h:outputText value="Session ID: #{sess.getId()}" />
+                        </f:facet>
+                    
+                        <h:outputText style="font-weight: bold ;" value="Nav History: " />
+                        
+                        <p:inputTextarea class="sessionData" readonly="true" autoResize="false" rows="2" value="#{sess.getAttribute('history')}"/>
+                        
+                        
+                        <h:outputText value="Agent: " />                        
+                        <h:outputText value="#{sess.getAttribute('agent')}" />
+                        
+                        <h:outputText value="IP_Address: " /> 
+                        <h:outputText value="#{sess.getAttribute('ip')}" />
+                        
+                    </h:panelGrid>
+                </p:rowExpansion>
+                
+                
+                <f:facet name="header">
+                    
+                    <p:commandButton 
+                       
+                        icon="fa fa-refresh"
+                        update="monitorSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                    
+                    <p:commandButton 
+                        actionListener="#{systemController.invalidateAll()}"
+                        icon="fa fa-times"
+                        update="monitorSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                </f:facet>
+            </p:dataTable>
+            <p:remoteCommand name="sessionUpdater" update="monitorSession" oncomplete="sessionUpdater();" delay="10000000" autoRun="true"/>
+        </p:tab>
+        
+        <p:tab>
+            <f:facet name="title">
+                <h:outputText value=" History" class="fa fa-black fa fa-history"/>
+            </f:facet>
+                   <p:dataTable id="historySession"
+                        value="#{systemController.statistikList}"
+                        var="history"
+                        paginator="true"
+                        rows="10"
+                        sortMode="multiple"
+                        rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                        >
+                <p:column style="width:16px">
+                    <p:rowToggler />
+                </p:column>
+
+                <p:column headerText="ID" sortBy="#{history.getSessionid()}" style="width: 250px;">
+                    <h:outputText value="#{history.getSessionid()}" />
+                </p:column>
+                <p:column headerText="Language" sortBy="#{history.getAgentLang()}" style="width: 30px;">
+                    <h:outputText value="#{history.getAgentLang()}" />
+                </p:column>                
+                <p:column headerText="IP" sortBy="#{history.getIpaddr()}" style="width: 100px;">
+                    <h:outputText value="#{history.getIpaddr()}" />
+                </p:column>
+                <p:column headerText="Last Accessed Time" sortBy="#{history.getLastAccessFormat()}" style="width: 100px;">
+                    <h:outputText value="#{history.getLastAccessFormat()}" />
+                </p:column>
+                <p:column headerText="Accessed Time" sortBy="#{history.getTimeaccessFormat()}" style="width: 100px;">
+                    <h:outputText value="#{history.getTimeaccessFormat()}" />
+                </p:column>
+                <p:column headerText="Login Name" sortBy="#{history.getLoginName()}">
+                    <h:outputText value="#{history.getLoginName()}" />
+                </p:column>
+                <p:column style="width: 40px;">
+                     <p:commandButton 
+                        actionListener="#{systemController.deleteStatistik(history)}"
+                        icon="fa fa-times"
+                        update="historySession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                </p:column>
+                       
+                <p:rowExpansion styleClass="TestClass">
+                    <h:panelGrid  columns="1" style="width:100%" >
+                        <f:facet name="header">
+                            <h:outputText value="Session ID: #{history.getSessionid()}" />
+                        </f:facet>
+                    
+                        <h:outputText style="font-weight: bold ;" value="Nav History: " />
+                        
+                        <p:inputTextarea class="sessionData" readonly="true" autoResize="false" rows="2" value="#{history.getNavHistory()}"/>
+                        
+                        <h:outputText value="Agent: " />                        
+                        <h:outputText value="#{history.getAgent()}" />
+                        
+                        <h:outputText value="IP_Address: " /> 
+                        <h:outputText value="#{history.getIpaddr()}" />
+                        
+                    </h:panelGrid>
+                </p:rowExpansion>
+                <f:facet name="header">
+                    
+                    <p:commandButton 
+                       
+                        icon="fa fa-refresh"
+                        update="historySession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                    
+                    <p:commandButton 
+                        actionListener="#{systemController.deleteAllStatistik()}"
+                        icon="fa fa-times"
+                        update="historySession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        >
+                    <p:confirm header="Delete all history?" message="Are You sure?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+            </p:dataTable>
+
+        </p:tab>
+        
+        <p:tab>
+            <f:facet name="title">
+                <h:outputText value=" Language" class="fa fa-black fa-language"/>
+            </f:facet>
+            
+            <p:dataTable id="languageSession"
+                        value="#{systemController.getLanguageList()}"
+                        var="language"
+                        paginator="true"
+                        rows="10"
+                        sortMode="multiple"
+                        rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                        >
+
+                <p:column headerText="ID" sortBy="#{language.ID}" style="width: 50px;">
+                    <h:outputText value="#{language.ID}" />
+                </p:column>
+                <p:column headerText="Language" sortBy="#{language.langNativeName}">
+                    <p:inputText value="#{language.langNativeName}" />
+                </p:column>                
+                <p:column headerText="Locale" sortBy="#{language.localeName}">
+                    <p:inputText value="#{language.localeName}" />
+                </p:column>
+                
+                <p:column style="width: 40px;">
+                     <p:commandButton 
+                        actionListener="#{systemController.deleteLanguage(language)}"
+                        icon="fa fa-times"
+                        update="languageSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                </p:column>
+                
+                <f:facet name="header">
+                    
+                    <p:commandButton 
+                        icon="fa fa-refresh"
+                        update="languageSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                    
+                    <p:commandButton 
+                        actionListener="#{systemController.deleteAllLanguage()}"
+                        icon="fa fa-times"
+                        update="languageSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        >
+                    <p:confirm header="Delete all languages?" message="Are You sure?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+                <f:facet name="footer">
+                    <p:commandButton id="addLanguageButton"
+                        styleClass="editTableIcon ajaxTrigger"
+                        icon="fa fa-plus"
+                        actionListener="#{systemController.newLanguage()}"
+                        update="languageSession"
+
+                        />    
+
+                    <p:commandButton id="saveLanguageButton"
+                        styleClass="editTableIcon ajaxTrigger"
+                        icon="fa fa-save"
+                        actionListener="#{systemController.saveLanguageList()}"
+                        update="languageSession"
+                        />    
+                </f:facet>
+            </p:dataTable>
+       
+        </p:tab>
+        
+        <p:tab>
+            <f:facet name="title">
+                <h:outputText value=" I18n" class="fa fa-black fa-globe"/>
+            </f:facet>
+            <p:dataTable id="i18nSessionnnn"
+                             value="#{systemController.getI18nList()}"
+                             var="entity"
+                             paginator="true"
+                             rows="10"
+                             sortMode="multiple"
+                             rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                             >
+
+                <p:column headerText="ID" sortBy="#{entity.ID}"  style="width: 100px;">
+                    <h:outputText value="#{entity.ID}" />
+                </p:column>
+                <p:column headerText="Key" sortBy="#{entity.i18nKey}">
+                    <h:outputText value="#{entity.i18nKey}" />
+                </p:column>   
+                <p:column headerText="Locale" sortBy="#{entity.i18nLocale}">
+                    <h:outputText value="#{entity.i18nLocale}" />
+                </p:column>  
+                <p:column headerText=" Value" sortBy="#{entity.i18nValue}">
+                    <p:inputText value="#{entity.i18nValue}" />
+                </p:column>  
+                <p:column headerText="Show" sortBy="#{entity.show}"  style="width: 70px;">
+                    <h:outputText value="#{entity.show}" />
+                </p:column>                  
+                <p:column style="width: 40px;">
+                    <p:commandButton 
+                        actionListener="#{systemController.changeI18nShow(entity)}"
+                       icon="fa fa-eye"
+                       update="i18nSessionnnn"
+                       styleClass="editTableIcon ajaxTrigger"
+                       >
+                    </p:commandButton>
+                </p:column>
+                <p:column style="width: 40px;">
+                     <p:commandButton 
+                        actionListener="#{systemController.deleteI18n(entity)}"
+                        icon="fa fa-times"
+                        update="i18nSessionnnn"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                </p:column>
+                <f:facet name="header">
+                    <p:commandButton 
+                        actionListener="#{systemController.deleteAllI18n()}"
+                        icon="fa fa-times"
+                        update="i18nSessionnnn"
+                        styleClass="editTableIcon ajaxTrigger"
+                        >
+                    <p:confirm header="Delete all i18n?" message="Are You sure?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </f:facet>
+                <f:facet name="footer"> 
+                    <p:commandButton 
+                        styleClass="editTableIcon ajaxTrigger"
+                        icon="fa fa-save"
+                        actionListener="#{systemController.saveI18nList()}"
+                        />    
+                </f:facet>
+            </p:dataTable>
+        </p:tab>
+        
+        <p:tab>
+            <f:facet name="title">
+                <h:outputText value=" Profiles" class="fa fa-black fa-users"/>
+            </f:facet>
+            <p:dataTable id="profileSession"
+                             value="#{systemController.getProfileList()}"
+                             var="profile"
+                             paginator="true"
+                             rows="10"
+                             sortMode="multiple"
+                             rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                             >
+
+                <p:column headerText="ID" sortBy="#{profile.ID}" style="width: 250px;">
+                    <h:outputText value="#{profile.ID}" />
+                </p:column>
+                <p:column headerText="Name" sortBy="#{profile.profileName}">
+                    <h:outputText value="#{profile.profileName}" />
+                </p:column>   
+                <p:column headerText="Laguages" sortBy="#{systemController.getAllLangFromProfile(profile)}">
+                    <h:outputText value="#{systemController.getAllLangFromProfile(profile)}" />
+                </p:column>   
+                <p:column headerText="Superman" sortBy="#{profile.getSuperAdmin()}">
+                    <h:outputText value="#{profile.getSuperAdmin()}" />
+                </p:column>  
+                <p:column style="width: 40px;">
+                    <p:commandButton 
+                        actionListener="#{systemController.setProfileSuper(profile)}"
+                       icon="fa fa-mars"
+                       update="profileSession"
+                       styleClass="editTableIcon ajaxTrigger"
+                       >
+                    </p:commandButton>
+               </p:column>
+                <p:column style="width: 40px;">
+                    <p:commandButton 
+                        actionListener="#{systemController.deleteProfile(profile)}"
+                       icon="fa fa-times"
+                       update="profileSession"
+                       styleClass="editTableIcon ajaxTrigger"
+                       >
+                        <p:confirm header="Delete the profile?" message="Are You sure?" icon="ui-icon-alert" />
+                    </p:commandButton>
+               </p:column>
+            </p:dataTable>
+        </p:tab>
+        
+    </p:tabView>
+    
+</h:form> 
+</ui:composition>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domain project-version="6">
+	<map name="AnWeb"/>
+
+	<node name="AnWeb"
+		 factory="org.apache.cayenne.configuration.server.XMLPoolingDataSourceFactory"
+		 schema-update-strategy="org.apache.cayenne.access.dbsync.SkipSchemaUpdateStrategy"
+		>
+		<map-ref name="AnWeb"/>
+		<data-source>
+			<driver value="org.apache.derby.jdbc.ClientDriver"/>
+			<url value="jdbc:derby://localhost:1527/AnWeb"/>
+			<connectionPool min="1" max="1"/>
+			<login userName="anweb" password=""/>
+		</data-source>
+	</node>
+</domain>

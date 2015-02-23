@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+    
+<svg 
+   width="960"
+   height="262"
+   viewBox="0 0 767.99996 209.59999"
+   id="headerBild">
+
+    <clipPath id="photoClip">
+          <circle cx="616.0" cy="105.0" r="96" />  
+    </clipPath>
+  
+
+  
+  <path id="path14" class="fillMainColor"
+     d="m 27.289337,9.1922828 740.710613,0 0,33.7868002 -740.710613,0 0,-33.7868002 z" />
+  <path
+     d="m 27.289337,50.776036 740.710613,0 0,151.026994 -740.710613,0 0,-151.026994 z"
+     id="path16" class="fillMainColor"
+     style="fill-rule:evenodd;stroke:none" />
+  <path
+     d="m -1.6793893e-6,9.1922828 15.2690346793893,0 0,33.7868002 -15.2690346793893,0 0,-33.7868002 z"
+     id="path18" class="fillMainColor"
+     style="fill-rule:evenodd;stroke:none" />
+  <path
+     d="m -1.6793893e-6,50.776036 15.2690346793893,0 0,151.026994 -15.2690346793893,0 0,-151.026994 z"
+     id="path20" class="fillMainColor"
+     style="fill-rule:evenodd;stroke:none" />
+
+  <path
+     d="m 712.40767,105.49701 c 0,53.19017 -43.11586,96.30472 -96.30538,96.30472 -53.18796,0 -96.30537,-43.11455 -96.30537,-96.30472 0,-53.187573 43.11741,-96.3047272 96.30537,-96.3047272 53.18952,0 96.30538,43.1171542 96.30538,96.3047272 z"
+     id="path30"
+     style="fill:none;stroke:none" />
+
+
+    <circle class="fillMainColor strokeBodyColor" cx="616.0" cy="105.0" r="100"
+              style="fill-rule:evenodd; stroke-width:8"/>
+
+    <image   class="profilePhoto" xlink:href="#{applicationController.selectedProfile.base64Img}"
+            x="#{510+applicationController.selectedProfile.getPhotoX()}"
+            y="#{applicationController.selectedProfile.getPhotoY()}"
+            width="#{200+applicationController.selectedProfile.getPhotoS()}"
+            height="#{200+applicationController.selectedProfile.getPhotoS()}"
+            clip-path="url(#photoClip)"
+    />
+  
+
+</svg>
+    
+</ui:composition>

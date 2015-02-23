@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    
+    <p:panel id="loginPanel">
+    <center>        
+        <h:form id="loginForm" >
+            <p:focus context="loginForm"/>
+         <p:messages id="messagesAuth" showDetail="true" autoUpdate="true" closable="true"/>
+         <h:panelGrid columns="2" columnClasses="textAlignStart, textAlignEnd">
+
+             <h:outputLabel for="password" value="Password:" />
+             <p:password id="password" rendered="true"
+                         value="#{applicationController.password}"
+                         label="password"
+                         tabindex="1"/>
+
+             <p:commandButton value="Login"
+                              actionListener="#{applicationController.login()}"
+                              class="ajaxTrigger"
+                              ajax="true"
+                              process="@all"
+                              update="@(.updateble)"
+                              tabindex="2"/>
+
+
+             <p:commandButton value="Cancel"
+                              actionListener="#{applicationController.navigateTo('info')}"
+                              ajax="true"
+                              styleClass="ajaxTrigger"
+                              update="@(.updateble)"
+                              
+                              tabindex="3"/>
+
+         </h:panelGrid>
+         
+     </h:form>
+     </center>  
+    </p:panel>
+
+</ui:composition>
+

@@ -1,0 +1,263 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 06.01.2015, 00:24:30
+    Author     : andrey
+*/
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:600&subset=latin,cyrillic);
+
+.topIcon{
+    font-size: 29px !important;
+    top: 26% !important;
+}
+
+.footerIcon{
+    font-size: 29px !important;
+    top: 28% !important;
+    margin-top: -4px !important;
+    left: 7px !important;
+    width: 48px;
+    height: 48px;
+}
+
+
+.fa{
+    background-image:none !important;
+    text-indent: 0px !important;
+    overflow: inherit !important;
+}
+
+.aw{
+    background-image:none !important;
+    text-indent: 0px !important;
+    overflow: inherit !important;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif !important;
+    /* width: 960px; */
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+    /* -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; */
+
+}
+.ui-panel.headerPanel{
+    margin-top: -270px;
+   /* background-image  : url("/javax.faces.resource/header1.svg.xhtml?ln=img");*/
+    background-repeat : no-repeat;
+    overflow          : hidden;
+    border            : none !important;
+    padding           : 0px 7px 0px 40px !important;
+}
+.ui-panel.headerPanel .ui-panel-content{
+    padding: 0px !important;
+}
+
+.topMenuToolBar{
+   width: 100%;
+   margin-top: 16px;
+
+}
+.ui-toolbar.topMenuToolBar, .ui-toolbar.footerMenuToolBar{
+    background: none;
+    padding: 0px;
+    border: none;
+
+}
+
+
+.ui-button.topMenuButton, .ui-button.topMenuButtonLang, .ui-button.footerMenuButton {
+    text-shadow: none !important;
+    background: none !important;
+    border: 1pt solid !important;
+    border-radius: 10px !important;
+    font-size: 12pt !important;
+    margin-right: 40px;
+}
+
+
+.ui-button.editTableIcon {
+    text-shadow: none !important;
+    background-color: #0074a4;
+    border: #0074a4 1pt solid !important;
+    border-radius: 10px !important;
+    color: #ffffff;
+    font-size: 12pt !important;
+    margin-right: 0px;
+}
+
+
+.ui-button.topMenuButtonLang .ui-button-text{
+    padding: 0px !important;
+}
+.ui-button.topMenuButtonLang{
+    text-shadow: none !important;
+    font-weight: normal !important;
+    font-size: 80%;
+    margin-top: 5px;
+    margin-right: 0px !important;
+    margin-left: 8px !important;
+    
+}
+
+.topMenuButton.ui-state-default,
+.topMenuButtonLang.ui-state-default,
+.footerMenuButton.ui-state-default,
+.editTableIcon.ui-state-default
+{
+     box-shadow: none; 
+    /* box-shadow: inset 0px 1px 0px #000000; */
+}
+
+
+
+button:focus {
+    outline:0;
+}
+
+
+.ui-button.topMenuButton .ui-button-text{
+    padding-left: 45px !important;
+}
+
+.headerText{
+    display: block;
+    margin: 33px 0px 0px 27px;
+}
+
+#labelTitle1{
+    margin-top: 12px;
+    margin-left: 29px;
+}
+
+#labelTitle2{
+    margin-top: -8px;
+    margin-left: 29px;
+}
+
+.footerMenuToolBar{
+    margin-top: 53px;
+    margin-left: -40px;
+    max-height: 45px !important;
+    width: 107% !important;
+}
+
+.ui-button.footerMenuButton{
+    font-weight: normal !important;
+    text-shadow: none !important;
+    border: #ffffff 1pt solid !important;
+    height: 45px !important;;
+    text-align: left !important; 
+    color: #000000 !important;
+    font-size: 10pt !important;
+    margin: 0px 10px 0px 0px !important;
+    
+}
+
+
+
+
+.ui-button.footerMenuButton .ui-button-text{
+    padding-left: 46px !important;
+}
+
+.footer{
+    padding: 0px 0px 0px 0px !important;
+    border: none !important;
+    width: 100%;
+    height: 38px;
+}
+
+.textAlignEnd{
+    text-align: end;
+}
+
+a {
+    text-decoration: none;
+}
+
+.Footer{
+   width: 100%;
+  
+
+}
+.ui-toolbar.Footer{
+    background: none;
+    padding: 6px 0px 0px 0px;
+    border: none;
+    height: 40px;
+
+}
+
+.ui-selectonemenu-label, .ui-inputfield ui-corner-all{
+    width: 80px !important;
+}
+
+.ui-spinner-input, .ui-inputfield ui-corner-all{
+    width: 50px !important;
+}
+
+.profileChooser{
+    width: 100px;
+}
+
+.RightColumn{
+text-align: center;
+float: right;
+}
+
+.VerticalTop{
+    vertical-align: top;
+}
+
+#mainAjaxLoader, #secondAjaxLoader{
+    background: none !important;
+    border: none !important;
+    box-shadow: none ! important;
+}
+
+.calendarInTable input{
+    width: 70px;
+}
+
+.ui-tabs-panel{
+    padding: 5px !important;
+    border: none !important;
+}
+
+.fa-gearM:after,
+.fa-cogM:after {
+  content: "\f013";
+}
+
+
+.ui-widget, .ui-widget .ui-widget {
+font-size: 10pt;
+font-weight: normal;
+font-family: 'Open Sans', sans-serif !important;
+}
+
+.ui-fileupload-content{
+    visibility: hidden !important;
+    height: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+}
+
+.ui-fileupload-buttonbar{
+    display: inline !important;
+background: none !important;
+border: none !important;
+}
+
+

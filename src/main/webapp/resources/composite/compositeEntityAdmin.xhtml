@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+>
+    <composite:interface>
+        <composite:attribute name="controllerEntity"
+                             required="true"
+                             type="net.andreynikolaev.anweb.dbutil.EntityController"/>
+    </composite:interface>
+ 
+    <composite:implementation>
+
+        <h:form>
+            <p:dataTable class="ajaxF dataList updateble"
+                 id="datalist"
+                 value="#{cc.attrs.controllerEntity.entityList}"
+                 var="entity"
+                 paginator="true"
+                 rowKey="#{entity.getObjectId()}"
+                 rows="10"
+                 sortMode="multiple"
+                 rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+
+                 >
+
+                <c:forEach var="column" items="#{cc.attrs.controllerEntity.columns}">  
+
+                        <p:column sortBy="#{entity[column.property]}" headerText="#{column.header}" rendered="#{column.showInTable}">
+                            
+                            <c:if test="#{not column.editable}">
+                                <p:outputLabel id="#{column.header}MyColumn" value="#{entity[column.property]}"/>
+                            </c:if>
+
+                            <c:if test="#{column.editable}">
+                                <c:if test="#{column.componentType eq 'int'}">
+                                    <p:spinner id="#{column.header}MyColumn" value="#{entity[column.property]}"/>
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'str'}">
+                                    <p:inputText id="#{column.header}MyColumn" value="#{entity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'text'}">
+                                    <p:inputTextarea id="#{column.header}MyColumn" value="#{entity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'date'}">
+                                    <p:calendar id="#{column.header}MyColumn" value="#{entity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'bool'}">
+                                    <p:inputSwitch id="#{column.header}MyColumn" value="#{entity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'rating'}">
+                                    <p:rating id="#{column.header}MyColumn" value="#{entity[column.property]}" />
+                                </c:if>
+                            </c:if>
+                            
+                        </p:column>
+                </c:forEach>
+
+                <p:column style="width:32px">
+                    <p:commandButton id="editButton" 
+                                     styleClass="editTableIcon ajaxTrigger updateble"
+                                     icon="ui-icon-search"
+                                     process="datalist"
+                                     actionListener="#{cc.attrs.controllerEntity.setSelectedEntity(entity)}"
+                                     update="@(.editDlg)"                             
+                                     oncomplete="PF('EditDialog').show();"
+                                     />
+
+                </p:column>
+                <p:column style="width:32px" rendered="#{not cc.attrs.controllerEntity.systemTable}">
+                    <p:commandButton id="deleteRowButton" 
+                                     styleClass="editTableIcon ajaxTrigger"
+                                     icon="ui-icon-trash"
+                                     update="datalist"
+                                     process="datalist"
+                                     actionListener="#{cc.attrs.controllerEntity.deleteSelectedEntity(entity)}"                        
+
+                                    >
+                        <p:confirm header="Confirmation" message="Are you sure? Delete Item" icon="ui-icon-alert" />
+                    </p:commandButton> 
+
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton    icon="fa fa-check"        
+                                styleClass="editTableIcon ajaxTrigger"
+                                actionListener="#{cc.attrs.controllerEntity.save()}"
+                  /> 
+                    
+                    <p:commandButton 
+                        icon="fa fa-upload"
+                        
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+
+                    <p:commandButton 
+                        
+                        icon="fa fa-download"
+                       
+                        styleClass="editTableIcon ajaxTrigger"
+                        
+                    /> 
+                    
+                    <p:commandButton id="deleteAllButton"
+                                     actionListener="#{cc.attrs.controllerEntity.deleteAllEntity()}"
+                                     icon="ui-icon-trash"
+                                     disabled="#{empty cc.attrs.controllerEntity.entityList}"
+                                     update="datalist"
+                                     process="datalist"                                  
+                                     styleClass="editTableIcon ajaxTrigger"
+                                     rendered="#{not cc.attrs.controllerEntity.systemTable}">
+
+                        <p:confirm header="Confirmation" message="Are you sure? Delete List" icon="ui-icon-alert" />
+                    </p:commandButton>
+
+                    <p:commandButton id="addButton"
+                                     styleClass="editTableIcon" 
+                                     icon="ui-icon-plus"
+                                     process="datalist"
+                                     update="@(.editDlg)"   
+                                     actionListener="#{cc.attrs.controllerEntity.setSelectedEntity()}"
+                                     oncomplete="PF('EditDialog').show()"
+                                     rendered="#{(cc.attrs.controllerEntity.editable) and (not cc.attrs.controllerEntity.systemTable)}"/>
+
+                </f:facet>
+
+
+
+            </p:dataTable>
+
+
+
+
+        </h:form>
+
+        <p:dialog class="editDlg"
+                  widgetVar="EditDialog"
+                  modal="true"
+                  resizable="false"
+                  appendTo="@(.superBody)"
+                  
+                  >
+        <h:form class="EditForm">
+            <h:panelGroup id="display">
+                <h:panelGrid columns="2" >
+
+                    <c:forEach items="#{cc.attrs.controllerEntity.columns}" var="column" >
+                        <p:outputLabel value="#{column.header}" for="#{column.header}MyColumn" />
+                        
+                        <c:if test="#{column.showInDialog}">
+                            <c:if test="#{not column.editable}">
+                                <p:inputText id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}" disabled="true"/>
+                            </c:if>
+
+                            <c:if test="#{column.editable}">
+                                <c:if test="#{column.componentType eq 'int'}">
+                                    <p:spinner id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}"/>
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'str'}">
+                                    <p:inputText id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'text'}">
+                                    <p:inputTextarea id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'date'}">
+                                    <p:calendar id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'bool'}">
+                                    <p:inputSwitch id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}" />
+                                </c:if>
+
+                                <c:if test="#{column.componentType eq 'rating'}">
+                                    <p:rating id="#{column.header}MyColumn" value="#{cc.attrs.controllerEntity.selectedEntity[column.property]}" />
+                                </c:if>
+                            </c:if>
+                        </c:if>
+                    </c:forEach>
+
+
+
+                    <p:commandButton value="Close"
+                                 oncomplete="PF('EditDialog').hide();" />
+
+
+                    <p:commandButton actionListener="#{cc.attrs.controllerEntity.saveSelectedEntity()}"
+                                     process="display"
+                                     update="@(.updateble)"                                       
+                                     styleClass="ajaxTrigger"
+                                     value="Save"
+                                     rendered="#{cc.attrs.controllerEntity.editable}"
+                              />
+
+
+                </h:panelGrid>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+        
+    </composite:implementation>
+ 
+</ui:composition>
+

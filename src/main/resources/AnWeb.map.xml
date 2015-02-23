@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-map xmlns="http://cayenne.apache.org/schema/3.0/modelMap"
+	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://cayenne.apache.org/schema/3.0/modelMap http://cayenne.apache.org/schema/3.0/modelMap.xsd"
+	 project-version="6">
+	<property name="defaultPackage" value="net.andreynikolaev.anweb.db"/>
+	<property name="defaultSchema" value="AnWeb"/>
+	<db-entity name="Experience" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="businesName" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="description" type="VARCHAR" length="1024"/>
+		<db-attribute name="endDate" type="DATE" length="10"/>
+		<db-attribute name="jobTitle" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="profileDetail_ID" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="show" type="BOOLEAN" isMandatory="true" length="1"/>
+		<db-attribute name="startDate" type="DATE" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="I18nSystem" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="i18nKey" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="i18nLocale" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="i18nValue" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="show" type="BOOLEAN" isMandatory="true" length="1"/>
+	</db-entity>
+	<db-entity name="LangList" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="langNativeName" type="CHAR" isMandatory="true" length="50"/>
+		<db-attribute name="localeName" type="CHAR" isMandatory="true" length="2"/>
+	</db-entity>
+	<db-entity name="ProfileDetails" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="firstName" type="VARCHAR" length="50"/>
+		<db-attribute name="info" type="CLOB" length="1000000"/>
+		<db-attribute name="lang_ID" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="lastName" type="VARCHAR" length="50"/>
+		<db-attribute name="profile_ID" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="show" type="BOOLEAN" isMandatory="true" length="1"/>
+		<db-attribute name="title1" type="VARCHAR" length="50"/>
+		<db-attribute name="title2" type="VARCHAR" length="50"/>
+	</db-entity>
+	<db-entity name="Profiles" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="10"/>
+		<db-attribute name="address" type="VARCHAR" length="100"/>
+		<db-attribute name="birthDay" type="DATE"/>
+		<db-attribute name="bodyColor" type="VARCHAR" length="6"/>
+		<db-attribute name="city" type="VARCHAR" length="50"/>
+		<db-attribute name="defaultLang" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="email" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="mainColor" type="VARCHAR" length="6"/>
+		<db-attribute name="mapIsShow" type="BOOLEAN" length="2"/>
+		<db-attribute name="password" type="VARCHAR" isMandatory="true" length="250"/>
+		<db-attribute name="phone" type="VARCHAR" length="50"/>
+		<db-attribute name="photo" type="BLOB" length="3145728"/>
+		<db-attribute name="photoS" type="VARCHAR" length="10"/>
+		<db-attribute name="photoX" type="VARCHAR" length="10"/>
+		<db-attribute name="photoY" type="VARCHAR" length="10"/>
+		<db-attribute name="profileName" type="VARCHAR" isMandatory="true" length="50"/>
+		<db-attribute name="secondColor" type="VARCHAR" length="6"/>
+		<db-attribute name="superAdmin" type="BOOLEAN" isMandatory="true" length="2"/>
+		<db-attribute name="web" type="VARCHAR" length="255"/>
+		<db-attribute name="zipCode" type="VARCHAR" length="10"/>
+	</db-entity>
+	<db-entity name="Skills" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="name" type="VARCHAR" length="255"/>
+		<db-attribute name="rating" type="INTEGER" length="10"/>
+		<db-attribute name="show" type="BOOLEAN" isMandatory="true" length="1"/>
+		<db-attribute name="showPosition" type="INTEGER" length="10"/>
+		<db-attribute name="skillsGroup_ID" type="INTEGER" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="SkillsGroup" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="groupName" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="profileDetail_ID" type="INTEGER" isMandatory="true" length="10"/>
+		<db-attribute name="show" type="BOOLEAN" isMandatory="true" length="1"/>
+		<db-attribute name="showPosition" type="INTEGER" isMandatory="true" length="10"/>
+	</db-entity>
+	<db-entity name="Statistik" schema="AnWeb">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
+		<db-attribute name="agent" type="VARCHAR" length="255"/>
+		<db-attribute name="agentLang" type="VARCHAR" length="255"/>
+		<db-attribute name="ipaddr" type="VARCHAR" length="255"/>
+		<db-attribute name="lastAccess" type="TIMESTAMP" length="29"/>
+		<db-attribute name="loginName" type="VARCHAR" length="255"/>
+		<db-attribute name="navHistory" type="VARCHAR" length="1024"/>
+		<db-attribute name="sessionid" type="VARCHAR" isMandatory="true" length="255"/>
+		<db-attribute name="timeaccess" type="TIMESTAMP" length="29"/>
+	</db-entity>
+	<obj-entity name="Experience" className="net.andreynikolaev.anweb.db.Experience" dbEntityName="Experience">
+		<obj-attribute name="businesName" type="java.lang.String" db-attribute-path="businesName"/>
+		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
+		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
+		<obj-attribute name="jobTitle" type="java.lang.String" db-attribute-path="jobTitle"/>
+		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
+		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
+	</obj-entity>
+	<obj-entity name="I18nSystem" className="net.andreynikolaev.anweb.db.I18nSystem" dbEntityName="I18nSystem">
+		<obj-attribute name="ID" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="i18nKey" type="java.lang.String" db-attribute-path="i18nKey"/>
+		<obj-attribute name="i18nLocale" type="java.lang.String" db-attribute-path="i18nLocale"/>
+		<obj-attribute name="i18nValue" type="java.lang.String" db-attribute-path="i18nValue"/>
+		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
+	</obj-entity>
+	<obj-entity name="LangList" className="net.andreynikolaev.anweb.db.LangList" dbEntityName="LangList">
+		<obj-attribute name="ID" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="langNativeName" type="java.lang.String" db-attribute-path="langNativeName"/>
+		<obj-attribute name="localeName" type="java.lang.String" db-attribute-path="localeName"/>
+	</obj-entity>
+	<obj-entity name="ProfileDetails" className="net.andreynikolaev.anweb.db.ProfileDetails" dbEntityName="ProfileDetails">
+		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="firstName"/>
+		<obj-attribute name="info" type="java.lang.String" db-attribute-path="info"/>
+		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="lastName"/>
+		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
+		<obj-attribute name="title1" type="java.lang.String" db-attribute-path="title1"/>
+		<obj-attribute name="title2" type="java.lang.String" db-attribute-path="title2"/>
+	</obj-entity>
+	<obj-entity name="Profiles" className="net.andreynikolaev.anweb.db.Profiles" dbEntityName="Profiles">
+		<obj-attribute name="ID" type="java.lang.Integer" db-attribute-path="ID"/>
+		<obj-attribute name="address" type="java.lang.String" db-attribute-path="address"/>
+		<obj-attribute name="birthDay" type="java.util.Date" db-attribute-path="birthDay"/>
+		<obj-attribute name="bodyColor" type="java.lang.String" db-attribute-path="bodyColor"/>
+		<obj-attribute name="city" type="java.lang.String" db-attribute-path="city"/>
+		<obj-attribute name="email" type="java.lang.String" db-attribute-path="email"/>
+		<obj-attribute name="mainColor" type="java.lang.String" db-attribute-path="mainColor"/>
+		<obj-attribute name="mapIsShow" type="java.lang.Boolean" db-attribute-path="mapIsShow"/>
+		<obj-attribute name="password" type="java.lang.String" db-attribute-path="password"/>
+		<obj-attribute name="phone" type="java.lang.String" db-attribute-path="phone"/>
+		<obj-attribute name="photo" type="byte[]" db-attribute-path="photo"/>
+		<obj-attribute name="photoS" type="java.lang.String" db-attribute-path="photoS"/>
+		<obj-attribute name="photoX" type="java.lang.String" db-attribute-path="photoX"/>
+		<obj-attribute name="photoY" type="java.lang.String" db-attribute-path="photoY"/>
+		<obj-attribute name="profileName" type="java.lang.String" db-attribute-path="profileName"/>
+		<obj-attribute name="secondColor" type="java.lang.String" db-attribute-path="secondColor"/>
+		<obj-attribute name="superAdmin" type="java.lang.Boolean" db-attribute-path="superAdmin"/>
+		<obj-attribute name="web" type="java.lang.String" db-attribute-path="web"/>
+		<obj-attribute name="zipCode" type="java.lang.String" db-attribute-path="zipCode"/>
+	</obj-entity>
+	<obj-entity name="Skills" className="net.andreynikolaev.anweb.db.Skills" dbEntityName="Skills">
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
+		<obj-attribute name="rating" type="java.lang.Integer" db-attribute-path="rating"/>
+		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
+		<obj-attribute name="showPosition" type="java.lang.Integer" db-attribute-path="showPosition"/>
+	</obj-entity>
+	<obj-entity name="SkillsGroup" className="net.andreynikolaev.anweb.db.SkillsGroup" dbEntityName="SkillsGroup">
+		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="groupName"/>
+		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
+		<obj-attribute name="showPosition" type="java.lang.Integer" db-attribute-path="showPosition"/>
+	</obj-entity>
+	<obj-entity name="Statistik" className="net.andreynikolaev.anweb.db.Statistik" dbEntityName="Statistik">
+		<obj-attribute name="agent" type="java.lang.String" db-attribute-path="agent"/>
+		<obj-attribute name="agentLang" type="java.lang.String" db-attribute-path="agentLang"/>
+		<obj-attribute name="ipaddr" type="java.lang.String" db-attribute-path="ipaddr"/>
+		<obj-attribute name="lastAccess" type="java.util.Date" db-attribute-path="lastAccess"/>
+		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="loginName"/>
+		<obj-attribute name="navHistory" type="java.lang.String" db-attribute-path="navHistory"/>
+		<obj-attribute name="sessionid" type="java.lang.String" db-attribute-path="sessionid"/>
+		<obj-attribute name="timeaccess" type="java.util.Date" db-attribute-path="timeaccess"/>
+	</obj-entity>
+	<db-relationship name="profileDetail" source="Experience" target="ProfileDetails" toMany="false">
+		<db-attribute-pair source="profileDetail_ID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="profile" source="LangList" target="Profiles" toMany="true">
+		<db-attribute-pair source="ID" target="defaultLang"/>
+	</db-relationship>
+	<db-relationship name="toLang" source="LangList" target="ProfileDetails" toMany="true">
+		<db-attribute-pair source="ID" target="lang_ID"/>
+	</db-relationship>
+	<db-relationship name="experiences" source="ProfileDetails" target="Experience" toMany="true">
+		<db-attribute-pair source="ID" target="profileDetail_ID"/>
+	</db-relationship>
+	<db-relationship name="lang" source="ProfileDetails" target="LangList" toMany="false">
+		<db-attribute-pair source="lang_ID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="profile" source="ProfileDetails" target="Profiles" toMany="false">
+		<db-attribute-pair source="profile_ID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="skillsGroups" source="ProfileDetails" target="SkillsGroup" toMany="true">
+		<db-attribute-pair source="ID" target="profileDetail_ID"/>
+	</db-relationship>
+	<db-relationship name="ProfileDetails" source="Profiles" target="ProfileDetails" toMany="true">
+		<db-attribute-pair source="ID" target="profile_ID"/>
+	</db-relationship>
+	<db-relationship name="defLang" source="Profiles" target="LangList" toMany="false">
+		<db-attribute-pair source="defaultLang" target="ID"/>
+	</db-relationship>
+	<db-relationship name="skillsGroup" source="Skills" target="SkillsGroup" toMany="false">
+		<db-attribute-pair source="skillsGroup_ID" target="ID"/>
+	</db-relationship>
+	<db-relationship name="Skills" source="SkillsGroup" target="Skills" toMany="true">
+		<db-attribute-pair source="ID" target="skillsGroup_ID"/>
+	</db-relationship>
+	<db-relationship name="profileDetail" source="SkillsGroup" target="ProfileDetails" toMany="false">
+		<db-attribute-pair source="profileDetail_ID" target="ID"/>
+	</db-relationship>
+	<obj-relationship name="profileDetail" source="Experience" target="ProfileDetails" deleteRule="Nullify" db-relationship-path="profileDetail"/>
+	<obj-relationship name="profile" source="LangList" target="Profiles" db-relationship-path="profile"/>
+	<obj-relationship name="toLang" source="LangList" target="ProfileDetails" db-relationship-path="toLang"/>
+	<obj-relationship name="experiences" source="ProfileDetails" target="Experience" deleteRule="Cascade" db-relationship-path="experiences"/>
+	<obj-relationship name="lang" source="ProfileDetails" target="LangList" deleteRule="Nullify" db-relationship-path="lang"/>
+	<obj-relationship name="profile" source="ProfileDetails" target="Profiles" deleteRule="Nullify" db-relationship-path="profile"/>
+	<obj-relationship name="skillsGroups" source="ProfileDetails" target="SkillsGroup" deleteRule="Cascade" db-relationship-path="skillsGroups"/>
+	<obj-relationship name="defLang" source="Profiles" target="LangList" deleteRule="Nullify" db-relationship-path="defLang"/>
+	<obj-relationship name="profileDetails" source="Profiles" target="ProfileDetails" deleteRule="Cascade" db-relationship-path="ProfileDetails"/>
+	<obj-relationship name="skillsGroup" source="Skills" target="SkillsGroup" deleteRule="Nullify" db-relationship-path="skillsGroup"/>
+	<obj-relationship name="profileDetail" source="SkillsGroup" target="ProfileDetails" deleteRule="Nullify" db-relationship-path="profileDetail"/>
+	<obj-relationship name="skills" source="SkillsGroup" target="Skills" deleteRule="Cascade" db-relationship-path="Skills"/>
+</data-map>

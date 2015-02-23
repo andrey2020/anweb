@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:m="http://code.google.com/p/gmaps4jsf/">
+    
+    
+    
+    <script type="text/javascript">
+        
+        var $map;
+
+         // var newdiv1 = document.createElement("div");
+          //   newdiv1.id = "map-canvas";
+          //   newdiv1.setAttribute("style","width: 100%; height: 500px;");
+             
+            //$("#mapContainer")[0].appendChild(newdiv1);
+        
+        var map;
+        var lang = '#{applicationController.localeCode}';
+            if(lang === "he") lang = "iw";
+        var addresFromProfile = '#{adminController.selectedProfile.getFullAddress()}';
+        if(map){
+            
+        }
+        
+        function loadMaps(){
+            
+            google.load('maps', '3',
+            {other_params:'language=' + lang,
+            callback: mapLoaded});
+        
+            
+        }    
+
+        function mapLoaded() {
+            
+             
+            var mapOptions = {
+                zoom: 2,
+                center: new google.maps.LatLng(36.0646619,24.2762393),
+                mapTypeId: google.maps.MapTypeId.TERRAIN
+                
+            };
+            
+            
+            if (navigator.geolocation){
+                    browserSupportFlag = true;
+                   
+                    geocoder = new google.maps.Geocoder();
+                    
+                    geocoder.geocode({'address': addresFromProfile,
+                                       'language' : lang
+                                            }, function(results, status)
+                    {
+                        if (status === google.maps.GeocoderStatus.OK){
+                            
+                            $map.setCenter(results[0].geometry.location);
+                            $map.setZoom(9);
+                            currentMarker = new google.maps.Marker({
+                             position: results[0].geometry.location,
+                             map: $map,
+                             title: "Home"
+                            });
+
+                        }
+                    });
+                }
+            $map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+            str = JSON.stringify($map.tosUrl) + ""; 
+            if($map.tosUrl){
+                
+            
+            if(str.indexOf(lang + "_US") === -1){
+                document.location.reload();
+                console.log("RELOAD :: " + $map.tosUrl);
+            }else{
+                console.log(str);
+            }
+          }
+        }
+               // );
+    </script>
+    
+    <h:form id="mapFaorm">
+        <p:panel id="mapPanel" header="#{msg[appMainController.navStatus]}">
+            <div id="googleMapScript">
+                <script src="http://www.google.com/jsapi?callback=loadMaps" type="text/javascript"></script>
+            </div>
+            <div id="mapContainer"/>
+            <div id="map-canvas" style="width:100%;height:500px"/>
+ 
+        </p:panel>
+    </h:form>
+    
+</ui:composition>

@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <p:panel header="#{msg[applicationController.getNavStatus()]}">
+                        
+        <script src='https://www.google.com/recaptcha/api.js'></script>         
+
+
+            <h:form>
+                <p:messages showDetail="false" closable="true"/>
+                <h:panelGrid columns="2" columnClasses="NULL, RightColumn" style="width: 100%">
+                <h:panelGrid columns="1" >
+                    <h:form>
+                        
+                        <h:panelGrid columns="1" >
+                            <p:outputLabel value="#{msg.yourName}:" for="inputName"/>
+                            <p:inputText id="inputName" class="updatebleMsg"
+                                         value="#{emailSenderController.fromName}"
+                                         required="true"                               
+                                         requiredMessage="Please enter your Name."
+                                         maxlength="50"
+                                             >
+
+                                    <p:watermark for="inputName" value="Your Name *" />
+                            </p:inputText>
+                            
+                            <p:outputLabel value="#{msg.yourEmail}:" for="inputEmail"/>
+                            <p:inputText id="inputEmail" value="#{emailSenderController.fromEmail}" required="true" class="updatebleMsg"
+                                            requiredMessage="Please enter your email address."
+                                            validatorMessage="Invalid email format"
+                                            >
+
+                                <f:validateRegex
+                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                 <p:watermark for="inputEmail" value="Email Address *" />
+                            </p:inputText>
+                            
+
+                            <p:outputLabel id="labelMsg" value="#{msg.message}" for="inputText"/>
+                            <p:inputTextarea class="updatebleMsg"
+                                             widgetVar="msgText"
+                                             id="inputText"
+                                             value="#{emailSenderController.msg}"
+                                             rows="10" cols="50" 
+                                             required="true"
+                                             maxlength="500"
+                                             onchange="updatelabelMsg();"/>
+
+                       </h:panelGrid>
+                        <h:panelGrid columns="2" style="width: 100%;" columnClasses="NULL, RightColumn">
+
+                                <p:commandButton value="#{msg.send}"
+                                                 ajax="true"
+                                                 icon="fa fa-paper-plane"
+                                                process="@all"
+                                                update="@(.updateble)"
+                                                 actionListener="#{emailSenderController.testEmail()}"
+                                                 class="ajaxTrigger"
+                                                 
+                                                 />
+
+                            
+                               <p:commandButton value="#{msg.clear}"
+                                                ajax="true"
+                                                actionListener="#{emailSenderController.clearMsg()}"
+                                                icon="fa fa-times"
+                                                class="ajaxTrigger"
+                                                process="@all"
+                                                rendered="false"
+                                                update="@(.updatebleMsg)"/>
+                        </h:panelGrid>
+                        
+                    </h:form>
+                </h:panelGrid>
+            
+
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="#{msg.phone}: "/>
+                    <p:outputLabel value="#{applicationController.selectedProfile.getPhone()}"/>
+
+                    <p:outputLabel value="#{msg.email}: "/>
+                    <p:outputLabel value="#{applicationController.selectedProfile.getEmail()}"/>
+                    
+                    <p:outputLabel value="#{msg.address}: "/>
+                    <span escape="fale" >
+                        #{applicationController.selectedProfile.getAddress()}
+                        
+                        <br/>
+                        #{applicationController.selectedProfile.getFullAddress()}
+                    </span>
+
+                </h:panelGrid>
+                    </h:panelGrid>
+</h:form>
+        
+        
+        
+
+    </p:panel>	  
+
+</ui:composition>

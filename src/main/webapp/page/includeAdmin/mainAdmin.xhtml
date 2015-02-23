@@ -1,0 +1,633 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      >
+    
+    <h:form id="mainAdminSetting" rendered="#{adminController.getAdminPage()}">
+
+           
+        <p:tabView id="tabbedPanel" activeIndex="#{adminController.activeindex}"
+                   style="padding: 0px !important; margin: 0px !important;"
+                   dynamic="true"
+                   onTabChange="updateUpdater();"
+                   onTabShow="updateUpdater();"
+                   class="ajaxTrigger">
+            
+
+            
+            <p:tab id="tab_Main" >
+                <f:facet name="title">
+                    <h:outputText value=" Main" class="fa fa-black fa-home"/>
+                </f:facet>
+        <p:fileUpload id="advancedupload" fileUploadListener="#{adminController.importProfile}"
+                    allowTypes="/(\.|\/)(xml)$/"
+                    sizeLimit="10145728"                  
+                    update="@form"
+                    label="Import Profile"
+                    auto="true"
+                    class="updateUpload"
+                    style="visibility: hidden; height: 0px !important"
+        />
+
+                    <h:panelGrid columns="2" style="width: 100%" columnClasses="NULL, RightColumn" >
+                        <p:panel rendered="#{adminController.activeindex == 0}">
+                            <p:outputLabel value="Profile name:" style="font-size: 1.5em;"/>
+                            <p:outputLabel value="#{adminController.selectedProfile.profileName}" style="font-size: 1.5em;"/>
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <p:outputLabel value="Phone:" for="phoneProfileSetting"/>
+                                <p:inputText id="phoneProfileSetting" value="#{adminController.selectedProfile.phone}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="Email:" for="emailProfileSetting"/>
+                                <p:inputText id="emailProfileSetting" value="#{adminController.selectedProfile.email}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="Web:" for="webProfileSetting"/>
+                                <p:inputText id="webProfileSetting" value="#{adminController.selectedProfile.web}" onchange="changeSetTrue()"/>
+                            </h:panelGrid>
+                            <p:separator/>
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="Map show:"/>
+                                <p:inputSwitch value="#{adminController.selectedProfile.mapIsShow}"
+                                               
+                                               onLabel="Visible"
+                                               offLabel="Hidden"
+                                               class='updateSwitch updateble'
+                                               onchange="changeSetTrue()"
+                                               
+                                               >
+                                
+                                </p:inputSwitch>
+
+                                <p:outputLabel value="Address:" for="addressProfileSetting"/>
+                                <p:inputText id="addressProfileSetting" value="#{adminController.selectedProfile.address}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="City:" for="cityProfileSetting"/>
+                                <p:inputText id="cityProfileSetting" value="#{adminController.selectedProfile.city}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="Postal code:" for="zopCodeProfileSetting"/>
+                                <p:inputText id="zopCodeProfileSetting" value="#{adminController.selectedProfile.zipCode}" onchange="changeSetTrue()"/>
+                            </h:panelGrid>
+
+                        </p:panel>
+                        <h:panelGrid columns="1">                
+                            <svg width="210px" height="210px">
+                                <clipPath id="boardCf">
+                                    <circle cx="105" cy="105" r="96" />  
+                                </clipPath>
+
+                                <circle class="fillMainColor strokeBodyColor" cx="105.0" cy="105.0" r="100"
+                                        style="fill-rule:evenodd; stroke-width:7"/>
+
+                                <image  class="profilePhoto"
+                                        xlink:href="#{adminController.selectedProfile.base64Img}"
+                                        x="#{adminController.selectedProfile.getPhotoX()}"
+                                        y="#{adminController.selectedProfile.getPhotoY()}"
+                                        width="#{200+adminController.selectedProfile.getPhotoS()}"
+                                        height="#{200+adminController.selectedProfile.getPhotoS()}"
+                                        clip-path="url(#boardCf)"
+                                />
+                            </svg>
+                            <p:commandButton value="Photo Settings"
+                                             class="ajaxTrigger"
+                                             icon="fa fa-file-image-o"
+                                             oncomplete="PF('PhotoDialog').show()"
+                                             update="@(.PhotoDlg)"/>
+                            <p:separator/>
+                            <p:commandButton value="Language Settings"
+                                             class="ajaxTrigger"
+                                             icon="fa fa-language"
+                                             oncomplete="PF('LangDialog').show()"
+                                             update="@(.LangDlg)"/>
+                        </h:panelGrid>
+
+                    </h:panelGrid>  
+              
+                    <p:remoteCommand name="updateSwitch"
+                        update="@(.updateSwitch)"                       
+                        autoRun="true"
+                        
+                        />
+            </p:tab>
+            
+            <c:forEach var="detail" items="#{adminController.selectedProfile.getProfileDetails()}" >
+                
+                <p:tab>
+                    <f:facet name="title">
+                        <h:outputText value=" #{detail.getLang().langNativeName}" class="fa fa-black fa-language"/>
+                    </f:facet>
+                    <h:panelGroup rendered="#{adminController.activeindex == adminController.selectedProfile.getProfileDetails().indexOf(detail) + 1}">
+                        <p:inputSwitch value="#{detail.show}"
+                                       onLabel="Visible"
+                                       offLabel="Hidden"
+                                       rendered="#{detail.lang != adminController.selectedProfile.defLang}"
+                                       style="margin: 0px 0px -35px 800px;"
+                                       onchange="changeSetTrue()"
+                                       class="updateSwitch updateble"/>
+                        <br/>
+
+                        <p:fieldset legend="Main"
+                                    class="tab1_#{detail.getLang().getLocaleName()}"
+                                    toggleable="true"
+                                    collapsed="true"
+                                    toggleSpeed="500"
+                                    style="padding: 0px !important; margin: 0px !important; border: none !important;">
+
+
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel value="First Name:" for="firstNameProfileSetting"/>
+                                <p:inputText id="firstNameProfileSetting" value="#{detail.firstName}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="Last Name:" for="lastNameProfileSetting"/>
+                                <p:inputText id="lastNameProfileSetting" value="#{detail.lastName}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="title1:" for="title1ProfileSetting"/>
+                                <p:inputText id="title1ProfileSetting" value="#{detail.title1}" onchange="changeSetTrue()"/>
+
+                                <p:outputLabel value="title2:" for="title2ProfileSetting"/>
+                                <p:inputText id="title2ProfileSetting" value="#{detail.title2}" onchange="changeSetTrue()"/>
+                            </h:panelGrid>
+
+
+
+                            <p:outputLabel value="Info:   (Lenght: #{detail.getInfo().length()})" />                        
+                            <p:editor class="updateSwitch"
+                                      value="#{detail.info}"
+                                      onchange="changeSetTrue()"
+                                      style="width: 100%;"
+                                      maxlength="1000000"
+                                      />
+
+                        </p:fieldset>
+
+                        <p:separator/>
+
+                        <p:fieldset legend="Experience"
+                                class="tab1_#{detail.getLang().getLocaleName()}"
+                                toggleable="true"
+                                collapsed="true"
+                                toggleSpeed="500"
+                                style="padding: 0px !important; margin: 0px !important; border: none !important;">
+
+                            <p:dataTable class="dataList_experienceslist_#{detail.getLang().getLocaleName()}"
+                                        id="experienceslist"
+                                        value="#{detail.experiences}"
+                                        var="exp"
+                                        paginator="true"
+
+                                        rows="10"
+                                        sortMode="multiple"
+                                        rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                                        >
+                                <p:column sortBy="#{exp.businesName}" headerText="Сompany Name" style="width:120px">
+                                    <p:inputText value="#{exp.businesName}" style="width: 110px !important;" onchange="changeSetTrue()"/> 
+                                </p:column>
+                                <p:column sortBy="#{exp.jobTitle}" headerText="Job Title" style="width:120px">
+                                    <p:inputText value="#{exp.jobTitle}" style="width: 110px !important;" onchange="changeSetTrue()"/> 
+                                </p:column>
+                                <p:column sortBy="#{exp.description}" headerText="Description">
+                                    <p:inputTextarea value="#{exp.description}" autoResize="false"
+                                                     style="max-width: 100% !important;
+                                                            min-width: 100% !important;
+                                                            min-height: 50px;
+                                                            width: 100% !important;
+                                                            padding: 0px;"
+                                                     rows="2"
+                                                     maxlength="1000"
+                                                     onchange="changeSetTrue()"/> 
+                                </p:column>
+                                <p:column sortBy="#{exp.startDate}" headerText="Start Date" style="width:80px">
+                                    <p:calendar value="#{exp.startDate}"
+                                                styleClass="calendarInTable"
+                                                navigator="true"
+                                                yearRange="c-20:c+5"
+                                                onchange="changeSetTrue()"/> 
+                                </p:column>
+                                <p:column sortBy="#{exp.endDate}" headerText="End Date" style="width:80px">
+                                    <p:calendar value="#{exp.endDate}"
+                                                styleClass="calendarInTable"
+                                                navigator="true"
+                                                yearRange="c-20:c+5"
+                                                onchange="changeSetTrue()"/> 
+                                </p:column>
+                                <p:column sortBy="#{exp.show}" headerText="Show" style="width:50px; text-align: center;">
+                                    <p:inputSwitch value="#{exp.show}" onchange="changeSetTrue()" class="updateSwitch"/> 
+                                </p:column>
+
+                                <p:column style="width:32px" >
+                                    <p:commandButton id="deleteRowButton" 
+                                                     styleClass="editTableIcon ajaxTrigger"
+                                                     
+                                                     icon="fa fa-times"
+                                                     actionListener="#{detail.removeExperience(exp)}"
+                                                     oncomplete="changeSetTrue()"
+                                                     update="@form"                       
+
+                                                    >
+
+                                    </p:commandButton> 
+
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:toolbar style="border: none !important;">
+                                        <f:facet name="left">
+                                            <p:commandButton 
+                                                icon="fa fa-files-o"
+                                                actionListener="#{adminController.copyExperience(detail.experiences)}"
+                                                disabled="#{detail.experiences.size() == 0}"
+                                                update="@form"
+                                                oncomplete="changeSetTrue()"
+                                                styleClass="editTableIcon ajaxTrigger"
+                                                />
+
+                                            <p:commandButton 
+                                                actionListener="#{adminController.insertExperience(detail)}"             
+                                                icon="fa fa-download"
+                                                oncomplete="changeSetTrue()"
+                                                update="@form"
+                                                styleClass="editTableIcon ajaxTrigger"
+                                                disabled="#{adminController.bufferExperience.size() == 0}"
+                                            /> 
+                                        </f:facet>
+                                        <f:facet name="right">
+                                            <p:commandButton 
+                                                icon="fa fa-trash-o"
+                                                actionListener="#{detail.removeAllExperience()}"
+                                                oncomplete="changeSetTrue()"
+                                                update="@form"
+                                                styleClass="editTableIcon ajaxTrigger"
+                                                disabled="#{detail.experiences.size() == 0}"
+                                                >
+
+                                                <p:confirm header="Confirmation" message="Are you sure? Delete List" icon="ui-icon-alert" />
+                                            </p:commandButton>
+
+                                            <p:commandButton id="addButton"
+                                                        styleClass="editTableIcon ajaxTrigger"
+                                                        icon="fa fa-plus"
+                                                        actionListener="#{detail.newExperience()}"
+                                                        update="@form"
+                                                        oncomplete="changeSetTrue()"
+
+                                                        />    
+                                        </f:facet>
+                                    </p:toolbar>
+
+
+
+
+                                </f:facet>
+                            </p:dataTable>
+                        </p:fieldset>
+
+                        <p:separator/>
+
+                        <p:fieldset legend="Skills"
+                                    
+                                    toggleable="true"
+                                    collapsed="true"
+                                    toggleSpeed="500"
+                                    style="padding: 0px !important; margin: 0px !important; border: none !important;">
+                            <p:ajax event="toggle" oncomplete="updateUpdater();"/>
+                            <p:toolbar >
+                                <f:facet name="left">
+                                    <p:commandButton id="copyFromButton1"
+                                        icon="fa fa-files-o"
+                                        update="@form"
+                                        oncomplete="changeSetTrue()"
+                                        styleClass="editTableIcon ajaxTrigger"
+                                        actionListener="#{adminController.copySkillsGroup(detail.skillsGroups)}"
+                                        disabled="#{detail.getSkillsGroups().size() == 0}"
+                                        />
+
+                                    <p:commandButton id="insertFromButton1"
+                                        icon="fa fa-download"
+                                        oncomplete="changeSetTrue()"
+                                        update="@form"
+                                        styleClass="editTableIcon ajaxTrigger"
+                                        actionListener="#{adminController.insertSkillsGroup(detail)}"             
+                                        disabled="#{adminController.bufferSkillsGroup.size() == 0}"
+
+                                    /> 
+                                </f:facet>
+                                <f:facet name="right">
+                                    <p:commandButton id="deleteAllButton1"
+                                        icon="fa fa-trash-o"
+                                        actionListener="#{detail.removeAllSkillsGroup()}"
+                                        oncomplete="changeSetTrue()"
+                                        update="@form"
+                                        styleClass="editTableIcon ajaxTrigger"
+                                        disabled="#{detail.getSkillsGroups().size() == 0}"
+                                        >
+
+                                        <p:confirm header="Confirmation" message="Are you sure? Delete List" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                    <p:commandButton id="addButton1"
+                                        styleClass="editTableIcon ajaxTrigger"
+                                        icon="fa fa-plus"
+                                        actionListener="#{detail.newSkillGroup()}"
+                                        update="@form"
+                                        oncomplete="changeSetTrue()"
+
+                                    /> 
+                                </f:facet>
+                                
+                            </p:toolbar>
+                            
+                                <c:forEach var="skillsGroup" items="#{detail.skillsGroups}" >
+
+                                    <p:fieldset legend="#{skillsGroup.getGroupName().length() == 0 ? 'Without Name' : skillsGroup.getGroupName()}"                                
+                                        toggleable="true"
+                                        collapsed="true"
+                                        toggleSpeed="500">
+                                        
+                                        <h:panelGrid columns="2" columnClasses="VerticalTop, RightColumn" style="width: 100%">
+                                            <h:panelGrid columns="2">
+                                                <h:outputLabel value="Group Name" />
+                                                <p:inputText value="#{skillsGroup.groupName}" onchange="changeSetTrue()"/>
+
+                                                <h:outputLabel value="Show Position" />
+                                                <p:spinner value="#{skillsGroup.showPosition}" onchange="changeSetTrue()"/>
+
+                                                <h:outputLabel value="Show" />
+                                                <p:inputSwitch class="updateSwitch" value="#{skillsGroup.show}" onchange="changeSetTrue()" />
+                                                <h:outputLabel value="Delete Group" />
+                                                <p:commandButton 
+                                                    styleClass="editTableIcon ajaxTrigger"
+                                                    icon="fa fa-trash-o"
+                                                    actionListener="#{detail.removeSkillGroup(skillsGroup)}"
+                                                    oncomplete="changeSetTrue()"
+                                                    update="@form"                       
+
+                                                   >
+                                                    <p:confirm header="Confirmation" message="Are you sure? Delete Skills Group with name #{skillsGroup.groupName}" icon="ui-icon-alert" />
+                                                </p:commandButton> 
+                                            </h:panelGrid>
+                                        
+                                            <p:dataTable class="dataList_skills_#{detail.getLang().getLocaleName()}"
+
+                                                        value="#{skillsGroup.getSkills()}"
+                                                        var="skills"
+                                                        paginator="true"
+
+                                                        rows="10"
+                                                        sortMode="multiple"
+                                                        rowsPerPageTemplate="10,20,30,40,50,100,150,300"
+                                                        >
+                                                <p:column sortBy="#{skills.name}" headerText="Skill Name">
+                                                    <p:inputText value="#{skills.name}" style="width: 230px !important;" onchange="changeSetTrue()"/> 
+                                                </p:column>
+                                                <p:column sortBy="#{skills.rating}" headerText="Rating" style="width:150px">
+                                                    <p:rating value="#{skills.rating}" onRate="changeSetTrue()" stars="7"/> 
+                                                </p:column>
+                                                <p:column sortBy="#{skills.show}" headerText="Show" style="width:50px">
+                                                    <p:inputSwitch value="#{skills.show}" onchange="changeSetTrue()" class="updateSwitch"/> 
+                                                </p:column>
+                                                <p:column sortBy="#{skills.showPosition}" headerText="Position" style="width:80px">
+                                                    <p:spinner value="#{skills.showPosition}" onchange="changeSetTrue()" class="spin"/> 
+                                                </p:column>
+
+                                                <p:column style="width:32px" >
+                                                    <p:commandButton 
+                                                                     styleClass="editTableIcon ajaxTrigger"
+
+                                                                     icon="fa fa-times"
+                                                                     actionListener="#{skillsGroup.removeSkill(skills)}"
+                                                                     oncomplete="changeSetTrue()"
+                                                                     update="@form"                       
+
+                                                                    >
+
+                                                    </p:commandButton> 
+
+                                                </p:column>
+                                                <f:facet name="footer">
+                                                    <p:toolbar style="border: none !important;">
+
+                                                        <f:facet name="right">
+
+                                                            <p:commandButton
+                                                                styleClass="editTableIcon ajaxTrigger"
+                                                                icon="fa fa-plus"
+                                                                actionListener="#{skillsGroup.newSkill()}"
+                                                                update="@form"
+                                                                oncomplete="changeSetTrue()"
+
+                                                            />
+
+                                                        </f:facet>
+                                                    </p:toolbar>
+
+
+
+
+                                                </f:facet>
+
+                                            </p:dataTable>
+                                        
+                                        </h:panelGrid>
+                                    </p:fieldset>
+                                    
+                                </c:forEach>
+                           
+                            
+                           
+                        </p:fieldset>
+                    </h:panelGroup>
+
+                    <p:remoteCommand name="updateSwitch1"
+                        update="@(.updateSwitch)"                       
+                        autoRun="true" />
+  
+                </p:tab>
+
+            </c:forEach>
+
+            <p:tab>
+                <f:facet name="title">
+                    <h:outputText value=" Style" class="fa fa-black  fa-eye"/>
+                </f:facet>
+                <h:panelGrid columns="2" >
+                    <p:outputLabel value="Main color" />
+                    <p:colorPicker id="mColor" value="#{adminController.selectedProfile.mainColor}" />
+
+                    <p:outputLabel value="Second color" />
+                    <p:colorPicker id="sColor" value="#{adminController.selectedProfile.secondColor}" />
+
+                    <p:outputLabel value="Body background color" />
+                    <p:colorPicker id="bColor" value="#{adminController.selectedProfile.bodyColor}" />
+                </h:panelGrid>
+                <p:separator/>
+                <p:commandButton styleClass="ajaxTrigger"
+                                 value="Apply"
+                                 process="tabbedPanel, mColor, sColor, bColor"
+                                 actionListener="#{adminController.setProfileChanged(true)}"                                 
+                                 update="@(.updateble)"
+                                 />
+
+            </p:tab> 
+        
+        </p:tabView>
+   
+        <p:remoteCommand name="changeSetTrue"
+            update=":adminToolBarForm:adminToolBar"
+            actionListener="#{adminController.setProfileChanged(true)}"/> 
+
+        <p:dialog class="LangDlg"
+                      widgetVar="LangDialog"
+                      modal="true"
+                      resizable="false"
+                      appendTo="@form"
+                      closable="false"
+                      header="Language Setting"
+                      >
+            <h:form class="EditForm1">
+                <h:panelGroup id="display1">
+                    <h:panelGrid columns="2" columnClasses="RightColumn, NULL" style="width: 100%;">
+
+                    <p:outputLabel value="Default Language:" for="defaultlanguageProfileSetting"/>
+                    <p:selectOneMenu id="defaultlanguageProfileSetting"
+
+                                    style="width: 100px; margin-right: 10px;"
+                                    styleClass="profileChooser"
+                                    value="#{adminController.selectedProfile.defLang}"
+                                    >
+                        <f:selectItems value="#{adminController.getLangList()}"
+                                       var="lang" itemLabel="#{lang.langNativeName}" itemValue="#{lang}"/>
+                        <f:converter converterId="net.andreynikolaev.anweb.entityConverter" />
+                        <p:ajax update="@parent, languageProfileSetting"/>
+
+                    </p:selectOneMenu>
+
+                    </h:panelGrid>
+                    <p:outputLabel value="Language" for="languageProfileSetting"/>
+
+                    <p:pickList id="languageProfileSetting"
+                                value="#{adminController.languagesList}"
+                                var="lang"
+
+                                itemLabel="#{lang.langNativeName}"
+                                itemValue="#{lang}"
+
+                                >
+
+                        <f:converter converterId="net.andreynikolaev.anweb.entityConverter" />
+                        <p:ajax event="transfer" listener="#{adminController.changeActiveLang}" update="@parent"/>
+                    </p:pickList>
+                </h:panelGroup>
+                <p:separator/>    
+        <p:commandButton value="Close"
+                         styleClass="ajaxTrigger"
+                         update="@(.updateble)"
+                         onstart="PF('LangDialog').hide();" />
+
+       </h:form>
+    </p:dialog>
+
+        <p:dialog class="PhotoDlg"
+                          widgetVar="PhotoDialog"
+                          modal="true"
+                          resizable="false"
+                          appendTo="@form"
+                          closable="false"
+                          header="Photo Setting"
+                          >
+            <h:form class="EditForm">
+                <h:panelGroup id="display">
+                    <p:inputText id="posY" value="#{adminController.selectedProfile.photoY}" style="width: 30px;"/>
+                    <h:panelGrid columns="2" >
+                        <p:slider for="posY" onSlide="setY();" widgetVar="SLY" maxValue="200" minValue="-200" type="vertical" style="height: 200px;"/>
+                            <svg width="210px" height="210px">
+                                <clipPath id="boardC">
+                                    <circle cx="105" cy="105" r="96" />  
+                                </clipPath>
+
+                                <circle class="fillMainColor strokeBodyColor" cx="105.0" cy="105.0" r="100"
+                                            style="fill-rule:evenodd; stroke-width:7"/>
+
+                                <image  id="photoToEdit" class="profilePhoto" xlink:href="#{adminController.selectedProfile.base64Img}"
+                                        x="#{adminController.selectedProfile.getPhotoX()}"
+                                        y="#{adminController.selectedProfile.getPhotoY()}"
+                                        width="#{200+adminController.selectedProfile.getPhotoS()}"
+                                        height="#{200+adminController.selectedProfile.getPhotoS()}"
+                                        clip-path="url(#boardC)"
+                                />
+                            </svg>
+
+                            <script>
+                                function setX() {                               
+                                    $("#photoToEdit").attr("x", PrimeFaces.widgets["SLX"].getValue());
+                                  }
+                                function setY() {
+                                    var yy = (PrimeFaces.widgets["SLY"].getValue());
+                                   $("#photoToEdit").attr("y", yy);
+                                  } 
+                                function setS() {
+                                    var ii = PrimeFaces.widgets["SLSeeeeee"].getValue();
+                                    $("#photoToEdit").attr("width", ii+200);
+                                    $("#photoToEdit").attr("height", ii+200);
+
+                                  }  
+                            </script>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2">
+                        <p:slider for="posX" onSlide="setX();" widgetVar="SLX" maxValue="200" minValue="-200" style="width: 200px;"/>
+                        <p:inputText id="posX" value="#{adminController.selectedProfile.photoX}" style="width: 30px;"/>                        
+
+
+                        <p:slider for="posS" onSlide="setS();" widgetVar="SLSeeeeee" maxValue="200" minValue="-200" style="width: 200px;" />
+                        <p:inputText id="posS" value="#{adminController.selectedProfile.photoS}" style="width: 30px;"/> 
+                    </h:panelGrid>    
+
+                    <p:separator/>
+                    <p:fileUpload fileUploadListener="#{adminController.photoUploadListener}"
+                                  allowTypes="/(\.|\/)(gif|jpe?g|png|svg)$/"
+                                  sizeLimit="3145728"
+
+                                  update="@form"
+                                  label="Add new Photo"
+                                  auto="true"
+                    />
+
+
+
+
+                </h:panelGroup>
+                <p:separator/>
+                <p:commandButton value="Cancel"
+                                 styleClass="ajaxTrigger"
+                                 process="@form"
+
+                                 onstart="PF('PhotoDialog').hide();"/>
+
+                <p:commandButton value="Delete Photo"
+                                 styleClass="ajaxTrigger"
+                                 process="@form"
+                                 actionListener="#{adminController.selectedProfile.setPhotoToNull()}"
+                                 onstart="PF('PhotoDialog').hide();"
+                                 oncomplete="changeSetTrue();"
+                                 update="@(.updateble)"
+                                 />
+
+                <p:commandButton value="Apply"
+                                 styleClass="ajaxTrigger"
+                                 process="@form"
+                                 oncomplete="changeSetTrue();"
+                                 update="@(.updateble)"
+                                 onstart="PF('PhotoDialog').hide();"/>
+
+
+
+
+           </h:form>
+        </p:dialog>
+    
+    </h:form>
+    
+</ui:composition>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+
+    <h:form id="adminToolBarForm">
+        
+        <p:messages id="messagesAdmin" showDetail="true" closable="true"/>
+        <p:toolbar id="adminToolBar" class="adminToolBar" rendered="#{adminController.getAdminPage()}">
+            <f:facet name="left">
+             
+                <p:commandButton id="dynaButton" value="Options" type="button" icon="ui-icon-grip-diagonal-se"/>
+                    <p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom">
+                        <p:submenu>
+                            <p:menuitem styleClass="ajaxTrigger"
+                                        icon="fa fa-cog"
+                                        id="mainAdmin"
+                                        value="&#160;Profile Settings"
+                                        actionListener="#{adminController.navigateInAdmin}"
+                                        update="@(.updateble)"/>
+                            
+                            <p:menuitem icon="fa fa-key"
+                                        id="chgPwdItem"
+                                        value="&#160;Change Password"
+                                        onclick="PF('chgPasswd').show();"
+                                        />
+                            
+                            <p:menuitem ajax="true"
+                                        icon="fa fa-download"
+                                        value="&#160;Profile Import"
+                                        class="upload"
+                                        />
+                            
+                            <p:menuitem ajax="false"
+                                        icon="fa fa-upload"
+                                        value="&#160;Profile Export"
+                                        actionListener="#{adminController.exportProfile()}"
+                                        update="@(.updateble)">
+                                <p:fileDownload value="#{adminController.fileExport}" />
+                            </p:menuitem>
+                            
+
+                            
+                        </p:submenu>
+                        <p:submenu>
+                             <p:menuitem style="margin: 5px;" icon="fa fa-trash-o">
+                                <h:panelGrid columns="2" width="100%" styleClass="ui-menuitem ui-widget ui-corner-all ui-menuitem-link">
+                                    <div class="fa fa-user-times"/>
+                                    <p:commandLink styleClass="ajaxTriggerAdmin"
+                                                id="removeProfile"
+                                                value="&#160;Remove Profile"
+                                                actionListener="#{adminController.removeProfile()}"
+                                                update="@(.updateble)"
+                                                process="@this"
+                                                >
+                                                
+                                        <p:confirm header="Delete Your Profile?" message="Are You sure?" icon="ui-icon-alert" />
+                                    </p:commandLink>
+                                </h:panelGrid>
+                            </p:menuitem>
+                        </p:submenu>
+                        <p:submenu rendered="#{adminController.selectedProfile.getSuperAdmin()}">
+                            <p:menuitem icon="fa fa-cogs"
+                                        styleClass="ajaxTrigger"
+                                        id="systemAdmin"
+                                        value="&#160;System"
+                                        actionListener="#{adminController.navigateInAdmin}"
+                                        />
+
+                        </p:submenu>
+                    </p:menu>
+
+            </f:facet>
+
+            <f:facet name="right">
+
+
+                <p:commandButton value="Save"
+                                 class="SaveCancelButtonProfileAdmin"
+                                 icon="ui-icon-check"
+                                 styleClass="ajaxTrigger"
+                                actionListener="#{adminController.saveSelectedProfile()}"
+                                disabled="#{!adminController.isProfileChanged()}"
+                                />
+
+                <p:commandButton disabled="#{!adminController.isProfileChanged()}"
+                                 class="SaveCancelButtonProfileAdmin"
+                                 value="Cancel"
+                                 icon="ui-icon-arrowreturnthick-1-w"
+                                styleClass="ajaxTrigger"
+                                update="@(.updateble), :growl"
+                                actionListener="#{adminController.cancelChanges()}"
+                                />
+                <span class="ui-separator">
+                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                </span>
+                <p:commandButton  
+                                 value="Logout"
+                                 icon=" ui-icon-extlink"
+                                 update="@form"
+                                 actionListener="#{adminController.logout()}"
+
+                                 />
+            </f:facet> 
+        </p:toolbar>
+        
+            <p:remoteCommand name="updateOnSave"
+                update="@(.updateble)"/>
+
+
+
+
+                        <p:remoteCommand name="updateUpload"
+                        update="@(.updateUpload)"                       
+                        autoRun="true"
+                        
+                        />
+    </h:form>
+    
+    <br></br>
+    
+    <h:panelGroup class="updateble" id="contentMAdmin">
+        <ui:fragment >
+            <ui:include src="../includeAdmin/#{adminController.navAdminStatus}.xhtml"/>
+        </ui:fragment>
+    </h:panelGroup>
+
+
+  
+    <p:dialog class="chgPasswd"
+                      widgetVar="chgPasswd"
+                      modal="true"
+                      resizable="false"
+                      appendTo="adminToolBarForm"
+                      closable="false"
+                      header="Change Password"
+                      >
+        <h:form class="EditForm1">
+            <p:messages id="messagesPwd" showDetail="true" autoUpdate="true" closable="true" style="max-width: 200px;"/>
+            <h:panelGrid>
+                
+                <h:outputLabel for="pwd" value="Password:" />
+                <p:password id="pwd" value="#{adminController.password}" feedback="false" label="Password" required="true"/>
+
+                <p:separator/>
+                
+                <h:outputLabel for="pwd1" value="New Password:" />
+                <p:password id="pwd1" value="#{adminController.newPassword}" feedback="false" match="pwd2" required="true">
+                    <p:watermark for="pwd1" value="New Password *" />
+                </p:password>
+
+                <h:outputLabel for="pwd2" value="Confirm New Password:" />
+                <p:password id="pwd2" value="#{adminController.newPassword}" feedback="false" required="true">
+                    <p:watermark for="pwd2" value="Confirm New Password *" />
+                </p:password>
+            </h:panelGrid>
+            
+            <h:panelGrid columns="2" columnClasses="NULL, RightColumn" style="width: 100%;">
+
+                <p:commandButton value="Close"
+                                 process="@this"
+                                 oncomplete="PF('chgPasswd').hide();" />
+
+                <p:commandButton value="Change"
+                                 update="@form"
+                                 oncomplete="PF('chgPasswd').hide();"
+                                 actionListener="#{adminController.changePassword()}"
+                                  />
+
+            </h:panelGrid>
+
+
+
+       </h:form>
+    </p:dialog>
+       
+            
+                <script>
+    
+    $('.upload').click(function(){
+        console.log('click');
+        $("input[id='mainAdminSetting:tabbedPanel:advancedupload_input']").click();
+        return false;
+});
+ 
+     
+ </script>  
+            
+
+</ui:composition>

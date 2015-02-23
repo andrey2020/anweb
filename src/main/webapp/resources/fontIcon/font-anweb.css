@@ -1,0 +1,215 @@
+@font-face {
+  font-family: 'FontAnweb';
+
+  src:
+     
+      url("#{resource['fontIcon:FontAnweb.woff']}&v=1.0.0") format('woff')
+    
+     ;
+
+  
+  font-weight: normal;
+  font-style: normal;
+}
+.aw {
+
+    background-image:none !important;
+    text-indent: 0px !important;
+    overflow: inherit !important;
+
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAnweb;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+/*@font-face {
+  font-family: 'FontAnweb';
+  src: url("#{resource['fontIcon:FontAnweb.woff']}")format('woff');
+  
+  font-weight: normal;
+  font-style: normal;
+}
+.aw {
+    background: none !important;
+    text-indent: 0px !important;
+  display: inline-block;
+  font-family: "FontAnweb";
+  /*font: normal normal normal 14px/1 FontAnweb;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+*/
+/* makes the font 33% larger relative to the icon container */
+.aw-lg {
+  font-size: 1.33333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+.aw-2x {
+  font-size: 2em;
+}
+.aw-3x {
+  font-size: 3em;
+}
+.aw-4x {
+  font-size: 4em;
+}
+.aw-5x {
+  font-size: 5em;
+}
+.aw-fw {
+  width: 1.28571429em;
+  text-align: center;
+}
+.aw-ul {
+  padding-left: 0;
+  margin-left: 2.14285714em;
+  list-style-type: none;
+}
+.aw-ul > li {
+  position: relative;
+}
+.aw-li {
+  position: absolute;
+  left: -2.14285714em;
+  width: 2.14285714em;
+  top: 0.14285714em;
+  text-align: center;
+}
+.aw-li.aw-lg {
+  left: -1.85714286em;
+}
+.aw-border {
+  padding: .2em .25em .15em;
+  border: solid 0.08em #eeeeee;
+  border-radius: .1em;
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: left;
+}
+.aw.pull-left {
+  margin-right: .3em;
+}
+.aw.pull-right {
+  margin-left: .3em;
+}
+.aw-spin {
+  -webkit-animation: aw-spin 2s infinite linear;
+  animation: aw-spin 2s infinite linear;
+}
+.aw-pulse {
+  -webkit-animation: aw-spin 1s infinite steps(8);
+  animation: aw-spin 1s infinite steps(8);
+}
+@-webkit-keyframes aw-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes aw-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+.aw-rotate-90 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.aw-rotate-180 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.aw-rotate-270 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -webkit-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+.aw-flip-horizontal {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+  -webkit-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+.aw-flip-vertical {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+  -webkit-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+:root .aw-rotate-90,
+:root .aw-rotate-180,
+:root .aw-rotate-270,
+:root .aw-flip-horizontal,
+:root .aw-flip-vertical {
+  filter: none;
+}
+.aw-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.aw-stack-1x,
+.aw-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.aw-stack-1x {
+  line-height: inherit;
+}
+.aw-stack-2x {
+  font-size: 2em;
+}
+.aw-inverse {
+  color: #ffffff;
+}
+/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
+   readers do not read off random characters that represent icons */
+.aw-power:before {
+  content: "\f237";
+}
+
+.aw-phone:before {
+  content: "\f238";
+}
+
+.aw-www:before {
+  content: "\f239";
+}
+
+.aw-home:before {
+  content: "\f23a";
+}
+
+.aw-mail:before {
+  content: "\f23b";
+}
+

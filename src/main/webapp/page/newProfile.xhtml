@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>New Profile</title>
+        <h:outputStylesheet library="css" name="style.css"  />
+    </h:head>
+    <h:body>
+        
+        <center>    
+            <h:form id="mainAdminSetting" style="width: 400px;">
+                        <p:panel>
+                            <p:growl id="growl" showDetail="true"/>
+                            <h:panelGrid columns="2" cellpadding="5" columnClasses="NULL, RightColumn">
+
+                                <p:outputLabel value="Profile name:" for="profileName"/>
+                                <p:inputText id="profileName"
+                                             value="#{newProfileController.profileName}"
+                                             style="font-weight: 600;"
+                                             required="true"
+                                             requiredMessage="Please enter your Profile Name."
+                                             validatorMessage="Invalid Profile Name">
+                                    <f:validateRegex
+                                        pattern="^[A-Za-z0-9]+" />
+                                    <p:watermark for="profileName" value="Profile Name *" />
+                                </p:inputText>
+                                
+                                
+                                
+                                <p:outputLabel value="Email:" for="emailNewProfile"/>
+                                <p:inputText id="emailNewProfile" value="#{newProfileController.email}" required="true"
+                                                requiredMessage="Please enter your email address."
+                                                validatorMessage="Invalid email format"
+                                                >
+ 
+                                    <f:validateRegex
+                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                     <p:watermark for="emailNewProfile" value="Email Address *" />
+                                </p:inputText>
+                               
+                                
+                                
+                                <h:outputLabel for="pwd1" value="Password:" />
+                                <p:password id="pwd1" value="#{newProfileController.password}" feedback="false" match="pwd2" label="Password" required="true">
+                                    <p:watermark for="pwd1" value="Password *" />
+                                </p:password>
+
+                                <h:outputLabel for="pwd2" value="Confirm Password" />
+                                <p:password id="pwd2" value="#{newProfileController.password}" feedback="false" label="Confirm Password" required="true">
+                                    <p:watermark for="pwd2" value="Confirm Password *" />
+                                </p:password>
+                                
+                            </h:panelGrid>
+                            <p:commandButton value="Create"
+                                             actionListener="#{newProfileController.createNewProfile()}"
+                                             update="growl"
+                                             process="@parent"
+                                             style="margin-left: -221px;"/>
+                        </p:panel>
+            </h:form>
+        </center>
+    </h:body>
+</html>
+
