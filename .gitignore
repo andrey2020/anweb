@@ -1,0 +1,3 @@
+/target/
+/src/main/resources/cayenne-AnWeb.xml
+/src/main/webapp/WEB-INF/applicationContext.xml
