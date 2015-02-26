@@ -1,4 +1,4 @@
 # anweb
 Main Class Diagram
 
-![alt tag](https://github.com/andrey2020/anweb/master/AnWeb.png)
+![alt tag](https://raw.githubusercontent.com/andrey2020/anweb/master/AnWeb.png)
