@@ -5,6 +5,8 @@
 	 project-version="6">
 	<property name="defaultPackage" value="net.andreynikolaev.anweb.db"/>
 	<property name="defaultSchema" value="AnWeb"/>
+	<property name="clientSupported" value="true"/>
+	<property name="defaultClientPackage" value="net.andreynikolaev.anweb.db.client"/>
 	<db-entity name="Experience" schema="AnWeb">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="10"/>
 		<db-attribute name="businesName" type="VARCHAR" isMandatory="true" length="255"/>
@@ -86,7 +88,7 @@
 		<db-attribute name="sessionid" type="VARCHAR" isMandatory="true" length="255"/>
 		<db-attribute name="timeaccess" type="TIMESTAMP" length="29"/>
 	</db-entity>
-	<obj-entity name="Experience" className="net.andreynikolaev.anweb.db.Experience" dbEntityName="Experience">
+	<obj-entity name="Experience" className="net.andreynikolaev.anweb.db.Experience" clientClassName="net.andreynikolaev.anweb.db.client.Experience" dbEntityName="Experience">
 		<obj-attribute name="businesName" type="java.lang.String" db-attribute-path="businesName"/>
 		<obj-attribute name="description" type="java.lang.String" db-attribute-path="description"/>
 		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="endDate"/>
@@ -94,19 +96,19 @@
 		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="startDate"/>
 	</obj-entity>
-	<obj-entity name="I18nSystem" className="net.andreynikolaev.anweb.db.I18nSystem" dbEntityName="I18nSystem">
+	<obj-entity name="I18nSystem" className="net.andreynikolaev.anweb.db.I18nSystem" clientClassName="net.andreynikolaev.anweb.db.client.I18nSystem" dbEntityName="I18nSystem">
 		<obj-attribute name="ID" type="java.lang.Integer" db-attribute-path="ID"/>
 		<obj-attribute name="i18nKey" type="java.lang.String" db-attribute-path="i18nKey"/>
 		<obj-attribute name="i18nLocale" type="java.lang.String" db-attribute-path="i18nLocale"/>
 		<obj-attribute name="i18nValue" type="java.lang.String" db-attribute-path="i18nValue"/>
 		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
 	</obj-entity>
-	<obj-entity name="LangList" className="net.andreynikolaev.anweb.db.LangList" dbEntityName="LangList">
+	<obj-entity name="LangList" className="net.andreynikolaev.anweb.db.LangList" clientClassName="net.andreynikolaev.anweb.db.client.LangList" dbEntityName="LangList">
 		<obj-attribute name="ID" type="java.lang.Integer" db-attribute-path="ID"/>
 		<obj-attribute name="langNativeName" type="java.lang.String" db-attribute-path="langNativeName"/>
 		<obj-attribute name="localeName" type="java.lang.String" db-attribute-path="localeName"/>
 	</obj-entity>
-	<obj-entity name="ProfileDetails" className="net.andreynikolaev.anweb.db.ProfileDetails" dbEntityName="ProfileDetails">
+	<obj-entity name="ProfileDetails" className="net.andreynikolaev.anweb.db.ProfileDetails" clientClassName="net.andreynikolaev.anweb.db.client.ProfileDetails" dbEntityName="ProfileDetails">
 		<obj-attribute name="firstName" type="java.lang.String" db-attribute-path="firstName"/>
 		<obj-attribute name="info" type="java.lang.String" db-attribute-path="info"/>
 		<obj-attribute name="lastName" type="java.lang.String" db-attribute-path="lastName"/>
@@ -114,7 +116,7 @@
 		<obj-attribute name="title1" type="java.lang.String" db-attribute-path="title1"/>
 		<obj-attribute name="title2" type="java.lang.String" db-attribute-path="title2"/>
 	</obj-entity>
-	<obj-entity name="Profiles" className="net.andreynikolaev.anweb.db.Profiles" dbEntityName="Profiles">
+	<obj-entity name="Profiles" className="net.andreynikolaev.anweb.db.Profiles" clientClassName="net.andreynikolaev.anweb.db.client.Profiles" dbEntityName="Profiles">
 		<obj-attribute name="ID" type="java.lang.Integer" db-attribute-path="ID"/>
 		<obj-attribute name="address" type="java.lang.String" db-attribute-path="address"/>
 		<obj-attribute name="birthDay" type="java.util.Date" db-attribute-path="birthDay"/>
@@ -135,18 +137,18 @@
 		<obj-attribute name="web" type="java.lang.String" db-attribute-path="web"/>
 		<obj-attribute name="zipCode" type="java.lang.String" db-attribute-path="zipCode"/>
 	</obj-entity>
-	<obj-entity name="Skills" className="net.andreynikolaev.anweb.db.Skills" dbEntityName="Skills">
+	<obj-entity name="Skills" className="net.andreynikolaev.anweb.db.Skills" clientClassName="net.andreynikolaev.anweb.db.client.Skills" dbEntityName="Skills">
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="name"/>
 		<obj-attribute name="rating" type="java.lang.Integer" db-attribute-path="rating"/>
 		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
 		<obj-attribute name="showPosition" type="java.lang.Integer" db-attribute-path="showPosition"/>
 	</obj-entity>
-	<obj-entity name="SkillsGroup" className="net.andreynikolaev.anweb.db.SkillsGroup" dbEntityName="SkillsGroup">
+	<obj-entity name="SkillsGroup" className="net.andreynikolaev.anweb.db.SkillsGroup" clientClassName="net.andreynikolaev.anweb.db.client.SkillsGroup" dbEntityName="SkillsGroup">
 		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="groupName"/>
 		<obj-attribute name="show" type="java.lang.Boolean" db-attribute-path="show"/>
 		<obj-attribute name="showPosition" type="java.lang.Integer" db-attribute-path="showPosition"/>
 	</obj-entity>
-	<obj-entity name="Statistik" className="net.andreynikolaev.anweb.db.Statistik" dbEntityName="Statistik">
+	<obj-entity name="Statistik" className="net.andreynikolaev.anweb.db.Statistik" clientClassName="net.andreynikolaev.anweb.db.client.Statistik" dbEntityName="Statistik">
 		<obj-attribute name="agent" type="java.lang.String" db-attribute-path="agent"/>
 		<obj-attribute name="agentLang" type="java.lang.String" db-attribute-path="agentLang"/>
 		<obj-attribute name="ipaddr" type="java.lang.String" db-attribute-path="ipaddr"/>
