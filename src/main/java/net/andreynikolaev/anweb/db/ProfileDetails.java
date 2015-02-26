@@ -1,5 +1,6 @@
 package net.andreynikolaev.anweb.db;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -7,9 +8,17 @@ import net.andreynikolaev.anweb.db.auto._ProfileDetails;
 import org.apache.cayenne.CayenneDataObject;
 
 public class ProfileDetails extends _ProfileDetails {
+    @SuppressWarnings("compatibility:3286935125312857718")
+    private static final long serialVersionUID = 1L;
+    
+    private List<SkillsGroup> skillsGroup;
+    private List<Experience> experience;
+    
+
     
     private Integer profileDetailId;
-    
+
+    @SuppressWarnings("unchecked")
     public List<Experience> getExperiencesSort() {
         return ((List<Experience>)readProperty("experiences")).stream()
                 .sorted((ex1, ex2) -> ex2.getStartDate().compareTo(ex1.getStartDate()))

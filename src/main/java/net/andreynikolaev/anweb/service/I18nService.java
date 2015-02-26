@@ -6,10 +6,11 @@
 package net.andreynikolaev.anweb.service;
 
 import java.io.Serializable;
+
 import net.andreynikolaev.anweb.DAO.I18nDAO;
+import net.andreynikolaev.anweb.db.I18nSystem;
 import net.andreynikolaev.anweb.dbutil.EntityDAO;
 import net.andreynikolaev.anweb.dbutil.EntityService;
-import net.andreynikolaev.anweb.db.I18nSystem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,8 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Service("i18nService")
-@Component
-@Transactional
 public class I18nService extends EntityService<I18nSystem> implements  Serializable{
     private static final long serialVersionUID = 995L;
     

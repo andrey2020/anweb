@@ -161,6 +161,7 @@
                                       value="#{detail.info}"
                                       onchange="changeSetTrue()"
                                       style="width: 100%;"
+                                      height="800"
                                       maxlength="1000000"
                                       />
 
@@ -239,7 +240,7 @@
                                         <f:facet name="left">
                                             <p:commandButton 
                                                 icon="fa fa-files-o"
-                                                actionListener="#{adminController.copyExperience(detail.experiences)}"
+                                                actionListener="#{adminController.getSelectedProfile().copyExperience(detail.getProfileDetailId())}"
                                                 disabled="#{detail.experiences.size() == 0}"
                                                 update="@form"
                                                 oncomplete="changeSetTrue()"
@@ -247,12 +248,12 @@
                                                 />
 
                                             <p:commandButton 
-                                                actionListener="#{adminController.insertExperience(detail)}"             
+                                                actionListener="#{adminController.getSelectedProfile().insertExperience(detail)}"             
                                                 icon="fa fa-download"
                                                 oncomplete="changeSetTrue()"
                                                 update="@form"
                                                 styleClass="editTableIcon ajaxTrigger"
-                                                disabled="#{adminController.bufferExperience.size() == 0}"
+                                                disabled="#{adminController.getSelectedProfile().getBufferExperience() == -1}"
                                             /> 
                                         </f:facet>
                                         <f:facet name="right">
@@ -302,7 +303,7 @@
                                         update="@form"
                                         oncomplete="changeSetTrue()"
                                         styleClass="editTableIcon ajaxTrigger"
-                                        actionListener="#{adminController.copySkillsGroup(detail.skillsGroups)}"
+                                        actionListener="#{adminController.getSelectedProfile().copySkillsGroup(detailsId)}"
                                         disabled="#{detail.getSkillsGroups().size() == 0}"
                                         />
 
@@ -311,8 +312,8 @@
                                         oncomplete="changeSetTrue()"
                                         update="@form"
                                         styleClass="editTableIcon ajaxTrigger"
-                                        actionListener="#{adminController.insertSkillsGroup(detail)}"             
-                                        disabled="#{adminController.bufferSkillsGroup.size() == 0}"
+                                        actionListener="#{adminController.getSelectedProfile().insertSkillsGroup(detail)}"             
+                                        disabled="#{adminController.getSelectedProfile().getBufferSkillsGroup() == -1}"
 
                                     /> 
                                 </f:facet>

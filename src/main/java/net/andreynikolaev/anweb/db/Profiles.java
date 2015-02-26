@@ -8,6 +8,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
@@ -20,17 +22,21 @@ import net.andreynikolaev.anweb.db.serializewrapper.SkillsGroupSerialize;
 import net.andreynikolaev.anweb.db.serializewrapper.SkillsSerialize;
 import net.andreynikolaev.anweb.dbutil.IdGenerator;
 import net.andreynikolaev.anweb.dbutil.ImportProfileException;
-import org.apache.cayenne.BaseContext;
 import org.apache.cayenne.query.SelectQuery;
 import org.apache.cayenne.validation.SimpleValidationFailure;
 import org.apache.cayenne.validation.ValidationResult;
 import org.apache.commons.codec.binary.Hex;
 
 public final class Profiles extends _Profiles{
-    
+    @SuppressWarnings("compatibility:-8553633279241804074")
+    private static final long serialVersionUID = 1L;
+
     private String base64Img;
     
     private ProfileDetails selectedProfileDetails;
+    
+    private Integer bufferExperience = -1;
+    private Integer bufferSkillsGroup = -1;
     
     public Profiles(){
         
@@ -230,6 +236,47 @@ public final class Profiles extends _Profiles{
           throw new ImportProfileException("Import Profile Eroor!");
         }
 
+    }
+    
+    public void copyExperience(Integer detailsId){
+        bufferExperience = detailsId;
+    }
+    
+    public void copySkillsGroup(Integer detailsId){
+        bufferSkillsGroup = detailsId;
+    }
+    
+    public void insertSkillsGroup(ProfileDetails detail){
+        /*getProfileDetails().stream().filter(pd -> pd.getProfileDetailId() == bufferSkillsGroup)
+                .findFirst()
+                .ifPresent(pd -> detail.addToSkillsGroups(pd.getSkillsGroups()));
+        
+        bufferSkillsGroup.stream().forEach((sk) ->{
+            detail.addToSkillsGroups(sk);
+            sk.getCloneSkills().stream().forEach((s) ->{             
+                sk.addToSkills(new Skills(s));
+               
+            });
+            sk.setCloneSkills(null);
+        });
+        bufferSkillsGroup.clear();
+        */
+    }
+    
+    public void insertExperience(ProfileDetails detail){
+       /* bufferExperience.stream().forEach((ex) ->{
+            detail.addToExperiences(ex);
+        });
+        bufferExperience.clear();
+        */
+    }
+    
+    public Integer getBufferExperience() {
+        return bufferExperience;
+    }
+
+    public Integer getBufferSkillsGroup() {
+        return bufferSkillsGroup;
     }
 
 

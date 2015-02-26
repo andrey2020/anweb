@@ -21,7 +21,6 @@ import javax.faces.event.ValueChangeEvent;
 import net.andreynikolaev.anweb.jsfutil.UtilSession;
 import net.andreynikolaev.anweb.db.Profiles;
 import net.andreynikolaev.anweb.service.ProfileService;
-import org.primefaces.component.gmap.GMap;
 import org.primefaces.context.RequestContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -43,7 +42,6 @@ public final class ApplicationController implements Serializable
     
     private String password;
     
-    private Profiles selectedProfile;
     private FacesContext context;
    
     private String localeCode;
@@ -51,11 +49,9 @@ public final class ApplicationController implements Serializable
     
     private Integer newProfileId;
 
-    private boolean inc = false;
-    private GMap m = new GMap();
     private final String profileNameParametr;
     
-    private HashMap<String, Integer> profilesNameList = new HashMap<>();
+    private final HashMap<String, Integer> profilesNameList = new HashMap<>();
     
    public ApplicationController() {
         this.navStatus = UtilSession.getNavStatus();
@@ -114,8 +110,6 @@ public final class ApplicationController implements Serializable
         updateUpdater();
     }
     
-
-    
     public void navigateTo(String actionEvent) {
        
         this.navStatus = actionEvent;  
@@ -124,14 +118,20 @@ public final class ApplicationController implements Serializable
     }
     
     private void setSelectedProfile(Integer id){
-        selectedProfile = (Profiles) getProfileService().getEntityById(id);
+        //selectedProfile = (Profiles) getProfileService().getProfileById(id);
+        getProfileService().setSelectedProfileByID(id);//getProfileById(id);
 
+    }
+    
+    public Profiles getSelectedProfile() {
+        return getProfileService().getSelectedProfile();
+        //return selectedProfile;
     }
     
     public void changeProfile(AjaxBehaviorEvent e){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         try {
-            getContext().getExternalContext().redirect("/" + getProfileService().getEntityById(newProfileId).getProfileName());
+            getContext().getExternalContext().redirect("/" + getProfileService().getProfileById(newProfileId).getProfileName());
         } catch (IOException ex) {
             Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -150,12 +150,10 @@ public final class ApplicationController implements Serializable
         return this.navStatus.equals(navName);
     }
     
-
-    
     public HashMap<String, Integer> getProfilesNameList(){
         if(profilesNameList.isEmpty()){    
             profilesNameList.clear();
-            getProfileService().getEntityList().stream().forEach((p) -> {
+            getProfileService().getProfileList().stream().forEach((p) -> {
                 profilesNameList.put(p.getProfileName(), (Integer) p.getObjectId().getIdSnapshot().get("ID"));
             });
         }
@@ -179,18 +177,6 @@ public final class ApplicationController implements Serializable
         this.navStatus = navStatus;
     }
 
-    public Profiles getSelectedProfile() {
-        return selectedProfile;
-    }
-    
-    public boolean isInc() {
-        return inc;
-    }
-
-    public void setInc(boolean inc) {
-        this.inc = inc;
-    }
-
     public String getDefauldProfile() {
         return "Andrey";
     }
@@ -206,11 +192,11 @@ public final class ApplicationController implements Serializable
     }
     
     public void login() {        
-        if (selectedProfile.checkLogin(password) && HttpSessionChecker.alreadyLogined(getSelectedProfile().getProfileName())){
+        if (getSelectedProfile().checkLogin(password) && HttpSessionChecker.alreadyLogined(getSelectedProfile().getProfileName())){
             
             password = "";
             setNavStatus("admin");
-            UtilSession.setLoginName(selectedProfile.getProfileName());
+            UtilSession.setLoginName(getSelectedProfile().getProfileName());
             UtilSession.setNavStatus(getNavStatus());
             updateUpdater();
 
@@ -222,7 +208,6 @@ public final class ApplicationController implements Serializable
     public void updateUpdater(){
         RequestContext.getCurrentInstance().execute("updateUpdater();");
     }
-    
     
     public String getPassword() {
         return "";

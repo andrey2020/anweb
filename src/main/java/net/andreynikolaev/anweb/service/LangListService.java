@@ -6,12 +6,12 @@
 package net.andreynikolaev.anweb.service;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+
 import net.andreynikolaev.anweb.DAO.LangListDAO;
+import net.andreynikolaev.anweb.db.LangList;
 import net.andreynikolaev.anweb.dbutil.EntityDAO;
 import net.andreynikolaev.anweb.dbutil.EntityService;
-import net.andreynikolaev.anweb.db.LangList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

@@ -18,9 +18,8 @@ import net.andreynikolaev.anweb.db.I18nSystem;
 import net.andreynikolaev.anweb.db.LangList;
 import net.andreynikolaev.anweb.db.Profiles;
 import net.andreynikolaev.anweb.db.Statistik;
-import net.andreynikolaev.anweb.dbutil.EntityService;
 import net.andreynikolaev.anweb.jsfutil.HttpSessionChecker;
-import net.andreynikolaev.anweb.service.ProfileService;
+import net.andreynikolaev.anweb.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -35,43 +34,23 @@ import org.springframework.stereotype.Controller;
 public class SystemController implements Serializable{
     
     @Autowired
-    @Qualifier("statistikService")
-    private EntityService statistikService;
-    
-    @Autowired
-    @Qualifier("langListService")
-    private EntityService langListService;
-    
-    @Autowired
-    @Qualifier("i18nService")
-    private EntityService i18nService;
-    
-    @Autowired
-    @Qualifier("profileService")
-    private ProfileService profileService;
+    @Qualifier("systemService")
+    private SystemService systemService;
+
     
     private List<HttpSession> httpSessionList = new ArrayList<>();
             
     public List getProfileList() {
-        return profileService.getEntityList();
+        return getSystemService().getSystemProfilesService().getEntityList();
     }
     public void deleteProfile(Profiles profile) {
-        getProfileService().deleteEntity(profile);
+        getSystemService().getSystemProfilesService().deleteEntity(profile);
     }    
     public void deleteAllProfile() {
-        getProfileService().deleteAllEntity();
+        getSystemService().getSystemProfilesService().deleteAllEntity();
     }
-    
-    public void setProfileSuper(Profiles profile) {
-        profileService.setProfileSuper(profile);
-    }
+
     public String getAllLangFromProfile(Profiles profile) {
-     /*   final List<String> listStr = new ArrayList();
-        profile.getAllLangFromProfile().stream().forEach((ll) -> {
-            listStr.add(ll.getLangNativeName() ); 
-        });
-        return listStr.stream().reduce((t, u) -> t + ", " + u).get();
-       */
         String str = "";
         str = profile.getAllLangFromProfile()
                 .stream()
@@ -83,58 +62,47 @@ public class SystemController implements Serializable{
     
     
     public List getI18nList() {        
-        return i18nService.getEntityList();
-    }
-    
-    public void changeI18nShow(I18nSystem entity) {
-        entity.setShow(!entity.getShow());
-        i18nService.save();
+        return getSystemService().getI18nService().getEntityList();
     }
       
     public void saveI18nList() {
-        getI18nService().save();
+        getSystemService().getI18nService().save();
     }
-    
-    
     public void newI18n() {
-        getI18nService().addEntity(new I18nSystem());
+        getSystemService().getI18nService().addEntity(new I18nSystem());
     }
     public void deleteI18n(I18nSystem i18n) {
-        checkDeleteError(getI18nService().deleteEntity(i18n));
+        checkDeleteError(getSystemService().getI18nService().deleteEntity(i18n));
     }    
     public void deleteAllI18n() {
-        checkDeleteError(getI18nService().deleteAllEntity());
+        checkDeleteError(getSystemService().getI18nService().deleteAllEntity());
     }    
+
     
     
-    public List getStatistikList() {
-        return statistikService.getEntityList();
-    }
     public void deleteStatistik(Statistik statistik) {
-        checkDeleteError(getStatistikService().deleteEntity(statistik));
+        checkDeleteError(getSystemService().getStatistikService().deleteEntity(statistik));
     }    
     public void deleteAllStatistik() {
-        checkDeleteError(getStatistikService().deleteAllEntity());
+        checkDeleteError(getSystemService().getStatistikService().deleteAllEntity());
     }
     
-    public List getLanguageList() {
-        return langListService.getEntityList();
-    }
-    public void deleteLanguage(LangList language) {
-        
-        checkDeleteError(getLangListService().deleteEntity(language));
+
+    
+    public void deleteLanguage(LangList language) {        
+        checkDeleteError(getSystemService().getLangListService().deleteEntity(language));
 
     }    
     public void deleteAllLanguage() {
-        checkDeleteError(getLangListService().deleteAllEntity());
+        checkDeleteError(getSystemService().getLangListService().deleteAllEntity());
     }
     public void saveLanguageList() {
-        getLangListService().save();
+        getSystemService().getLangListService().save();
     }
     
     
     public void newLanguage() {
-        getLangListService().addEntity(new LangList(true));
+        getSystemService().getLangListService().addEntity(new LangList(true));
     }
     
     private void checkDeleteError(boolean result) {
@@ -174,36 +142,12 @@ public class SystemController implements Serializable{
 
     }
 
-    public EntityService getStatistikService() {
-        return statistikService;
+    public SystemService getSystemService() {
+        return systemService;
     }
 
-    public void setStatistikService(EntityService statistikService) {
-        this.statistikService = statistikService;
-    }
-
-    public EntityService getLangListService() {
-        return langListService;
-    }
-
-    public void setLangListService(EntityService langListService) {
-        this.langListService = langListService;
-    }
-
-    public EntityService getI18nService() {
-        return i18nService;
-    }
-
-    public void setI18nService(EntityService i18nService) {
-        this.i18nService = i18nService;
-    }
-
-    public ProfileService getProfileService() {
-        return profileService;
-    }
-
-    public void setProfileService(ProfileService profileService) {
-        this.profileService = profileService;
+    public void setSystemService(SystemService systemService) {
+        this.systemService = systemService;
     }
 
     

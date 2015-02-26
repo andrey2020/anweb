@@ -3,7 +3,7 @@ package net.andreynikolaev.anweb.db;
 import java.text.SimpleDateFormat;
 import net.andreynikolaev.anweb.db.auto._Statistik;
 
-public class Statistik extends _Statistik {
+public class Statistik extends _Statistik{
 
     public String getLastAccessFormat(){
         if(getLastAccess() != null)

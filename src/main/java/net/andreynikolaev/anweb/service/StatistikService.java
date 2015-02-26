@@ -6,10 +6,12 @@
 package net.andreynikolaev.anweb.service;
 
 import java.io.Serializable;
+
 import net.andreynikolaev.anweb.DAO.StatistikDAO;
 import net.andreynikolaev.anweb.db.Statistik;
 import net.andreynikolaev.anweb.dbutil.EntityDAO;
 import net.andreynikolaev.anweb.dbutil.EntityService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

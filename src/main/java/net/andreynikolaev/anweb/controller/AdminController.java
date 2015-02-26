@@ -15,17 +15,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.servlet.http.Part;
-import net.andreynikolaev.anweb.db.Experience;
 import net.andreynikolaev.anweb.db.LangList;
-import net.andreynikolaev.anweb.db.ProfileDetails;
 import net.andreynikolaev.anweb.jsfutil.UtilSession;
 import net.andreynikolaev.anweb.db.Profiles;
-import net.andreynikolaev.anweb.db.Skills;
-import net.andreynikolaev.anweb.db.SkillsGroup;
 import net.andreynikolaev.anweb.dbutil.ImportProfileException;
+import net.andreynikolaev.anweb.service.AdminProfileService;
 import net.andreynikolaev.anweb.service.ProfileService;
-
 import org.apache.cayenne.validation.ValidationException;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.context.RequestContext;
@@ -47,29 +42,29 @@ import org.springframework.stereotype.Controller;
 @Controller
 @Scope("session")
 public class AdminController implements Serializable{
+    @SuppressWarnings("compatibility:-9182234059446501527")
     private static final long serialVersionUID = 1L;
-    @Autowired
-    private ApplicationController appController;
     
     @Autowired
+    @Qualifier("adminProfileService")
+    private AdminProfileService adminProfileService;
+    
+        @Autowired
     @Qualifier("profileService")
     private ProfileService profileService;
     
     private DualListModel<LangList> languagesList;
-    private Profiles selectedProfile;
     
     private boolean profileChanged;
     
-    private List<LangList> langList;
+    
     
     private String password;
     private String newPassword;
-    private List<Experience> bufferExperience = new ArrayList<>();
-    private List<SkillsGroup> bufferSkillsGroup = new ArrayList<>();
-    private List<Skills> bufferSkills = new ArrayList<>();
-    
-    private StreamedContent fileExport;
-    private UploadedFile fileImport;
+
+
+    private transient StreamedContent fileExport;
+    private transient UploadedFile fileImport;
     
     private int activeindex;
     private String navAdminStatus = "mainAdmin";
@@ -78,35 +73,22 @@ public class AdminController implements Serializable{
     public AdminController(){
         
     }
-
-    public List<LangList> getLangList() {
-        return langList;
-    }
-
-    public void setLangList(List<LangList> langList) {
-        this.langList = langList;
-    }
     
     @PostConstruct
     public void init(){
-        setSelectedProfile(getAppController().getSelectedProfile());
-        langList = new ArrayList<>();
-        langList.addAll(getSelectedProfile().getLangFromSysstem());
       
     }
     
     public void removeProfile(){
-        getProfileService().deleteEntity(getSelectedProfile());
+        getAdminProfileService().deleteProfile(getSelectedProfile());
         logout();
     }
 
     public Profiles getSelectedProfile() {
-        return selectedProfile;
+        return getProfileService().getSelectedProfile();
     }
 
-    public void setSelectedProfile(Profiles selectedProfile) {
-        this.selectedProfile = selectedProfile;
-    }
+   
     
     public void navigateInAdmin(ActionEvent actionEvent) {
         if(profileChanged){
@@ -137,13 +119,6 @@ public class AdminController implements Serializable{
         }
     }
 
-    public ApplicationController getAppController() {
-        return appController;
-    }
-
-    public void setAppController(ApplicationController appController) {
-        this.appController = appController;
-    }
     
     public Boolean getAdminPage(){
         boolean result = false;
@@ -151,7 +126,7 @@ public class AdminController implements Serializable{
             result = true;
         }else{
             try {
-                UtilSession.geExternalContext().redirect("/" + getAppController().getDefauldProfile());
+                UtilSession.geExternalContext().redirect("/Andrey");
             } catch (IOException ex) {
                 Logger.getLogger(AdminController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -181,7 +156,8 @@ public class AdminController implements Serializable{
         }
 
     }
-    
+
+    @SuppressWarnings("unchecked")
     public void changeActiveLang(TransferEvent e){      
         if(e.isAdd()){
             getSelectedProfile().addLanguages((List<LangList>) e.getItems());            
@@ -190,11 +166,12 @@ public class AdminController implements Serializable{
         }
         setProfileChanged(true);
     }
-    
+
+    @SuppressWarnings("unchecked")
     public DualListModel<LangList> getLanguagesList() {
         
         List fL = new ArrayList();
-        fL.addAll(langList);
+        fL.addAll(getSelectedProfile().getLangFromSysstem());
         List pL = getSelectedProfile().getAllLangFromProfile();
         fL.removeAll(pL);
         languagesList = new DualListModel<>(fL, pL);
@@ -229,44 +206,6 @@ public class AdminController implements Serializable{
             newPassword = "";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success.", "Your password has been changed!"));
         }
-    }
-    
-    public void copyExperience(List<Experience> experiences){
-        bufferExperience.clear();
-        
-        experiences.stream().forEach((ex) ->{
-            bufferExperience.add(new Experience(ex));
-            
-        });
-    }
-    
-    public void copySkillsGroup(List<SkillsGroup> skillsGroup){
-        bufferSkillsGroup.clear();
-
-        skillsGroup.stream().forEach((sg) -> {
-            bufferSkillsGroup.add(sg.cloneSkillsGroup(sg));
-        });
-    }
-    
-    public void insertSkillsGroup(ProfileDetails detail){
-        bufferSkillsGroup.stream().forEach((sk) ->{
-            detail.addToSkillsGroups(sk);
-            sk.getCloneSkills().stream().forEach((s) ->{             
-                sk.addToSkills(new Skills(s));
-               
-            });
-            sk.setCloneSkills(null);
-        });
-        bufferSkillsGroup.clear();
-        
-    }
-    
-    public void insertExperience(ProfileDetails detail){
-        bufferExperience.stream().forEach((ex) ->{
-            detail.addToExperiences(ex);
-        });
-        bufferExperience.clear();
-        
     }
     
     public void exportProfile(){
@@ -310,9 +249,7 @@ public class AdminController implements Serializable{
         this.newPassword = newPassword;
     }
 
-    public List<Experience> getBufferExperience() {
-        return bufferExperience;
-    }
+
 
     public int getActiveindex() {
         return activeindex;
@@ -322,9 +259,6 @@ public class AdminController implements Serializable{
         this.activeindex = activeindex;
     }
 
-    public List<SkillsGroup> getBufferSkillsGroup() {
-        return bufferSkillsGroup;
-    }
 
     public StreamedContent getFileExport() {
         return fileExport;
@@ -338,6 +272,19 @@ public class AdminController implements Serializable{
         this.fileImport = fileImport;
     }
 
+   
+    public void updateUpdater(){
+        RequestContext.getCurrentInstance().execute("updateUpdater();");
+    }
+
+    public AdminProfileService getAdminProfileService() {
+        return adminProfileService;
+    }
+
+    public void setAdminProfileService(AdminProfileService adminProfileService) {
+        this.adminProfileService = adminProfileService;
+    }
+
     public ProfileService getProfileService() {
         return profileService;
     }
@@ -346,8 +293,8 @@ public class AdminController implements Serializable{
         this.profileService = profileService;
     }
     
-    public void updateUpdater(){
-        RequestContext.getCurrentInstance().execute("updateUpdater();");
+    public List<LangList> getLangList(){
+        return getAdminProfileService().getLangListService().getEntityList();
     }
     
     
