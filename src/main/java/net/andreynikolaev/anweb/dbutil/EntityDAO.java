@@ -29,8 +29,7 @@ public abstract class EntityDAO<E extends CayenneDataObject> implements Serializ
    
     /**
      * Get Entity List
-     *
-     * @return 
+     * 
      */
     
     public EntityDAO(){

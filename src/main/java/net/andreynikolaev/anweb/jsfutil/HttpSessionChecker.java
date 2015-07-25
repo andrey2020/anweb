@@ -56,7 +56,8 @@ public class HttpSessionChecker implements HttpSessionListener {
     @Override
     public void sessionDestroyed(HttpSessionEvent event) {
         sessions.remove(event.getSession().getId());
-        addStatistik(event.getSession());
+        String ip = (String) event.getSession().getAttribute("ip");
+        if(ip != null && ip.length() != 0) addStatistik(event.getSession());
         System.out.printf("Session ID %s destroyed at %s%n", event.getSession().getId(), new Date());
     }
     

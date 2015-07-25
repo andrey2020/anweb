@@ -37,7 +37,7 @@
         <property name="host" value="smtp.gmail.com" />
         <property name="port" value="587" />
         <property name="username" value="noreply.andrey.nikolaev@gmail.com" />
-        <property name="password" value="" /> 
+        <property name="password" value="sekret" /> 
         <property name="javaMailProperties">
             <props>
             <prop key="mail.smtp.auth">true</prop>
@@ -45,50 +45,5 @@
             </props>
         </property>
     </bean>
-    
- <!--
-    <bean id="DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="org.apache.derby.jdbc.ClientDriver" />
-        <property name="url" value="jdbc:derby://localhost:1527/and" />
-        <property name="username" value="andrey" />
-        <property name="password" value="12345" />
-    </bean>
-    
-    
- 
-    
-    
-    Session Factory Declaration 
-    <bean id="SessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="dataSource" ref="DataSource" />        
-        <property name="annotatedClasses">
-            <list>
-                <value>net.andreynikolaev.anweb.model.I18nEntity</value>
-                <value>net.andreynikolaev.anweb.model.ExperienceEntity</value>
-                <value>net.andreynikolaev.anweb.model.StatistikEntity</value>
-                <value>net.andreynikolaev.anweb.model.SkillsGroupEntity</value>
-                <value>net.andreynikolaev.anweb.model.SkillsEntity</value>
-                <value>net.andreynikolaev.anweb.model.ProfileI18nEntity</value>
-                <value>net.andreynikolaev.anweb.model.ProfileEntity</value>
-                <value>net.andreynikolaev.anweb.model.LangListEntity</value>
-            </list>
-        </property>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.DerbyTenSevenDialect</prop>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
-            </props>
-        </property>
-    </bean>
-    -->
-    <!-- Transaction Manager is defined 
-    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="SessionFactory"/>
-        <property name="dataSource" ref="DataSource" />        
-    </bean>
-    <tx:annotation-driven transaction-manager="txManager"/>
-    -->
-
 </beans>
 

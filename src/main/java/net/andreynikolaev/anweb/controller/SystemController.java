@@ -87,6 +87,9 @@ public class SystemController implements Serializable{
         checkDeleteError(getSystemService().getStatistikService().deleteAllEntity());
     }
     
+    public List<Statistik> getStatistikList(){
+        return getSystemService().getStatistikService().getEntityList();
+    }
 
     
     public void deleteLanguage(LangList language) {        
@@ -98,6 +101,10 @@ public class SystemController implements Serializable{
     }
     public void saveLanguageList() {
         getSystemService().getLangListService().save();
+    }
+    
+    public List<LangList> getLanguageList(){
+        return getSystemService().getLangListService().getEntityList();
     }
     
     

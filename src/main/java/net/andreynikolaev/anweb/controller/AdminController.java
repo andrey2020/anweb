@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.andreynikolaev.anweb.controller;
 
 import java.io.IOException;
@@ -41,45 +36,42 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @Scope("session")
-public class AdminController implements Serializable{
+public class AdminController implements Serializable {
+
     @SuppressWarnings("compatibility:-9182234059446501527")
     private static final long serialVersionUID = 1L;
-    
+
     @Autowired
     @Qualifier("adminProfileService")
     private AdminProfileService adminProfileService;
-    
-        @Autowired
+
+    @Autowired
     @Qualifier("profileService")
     private ProfileService profileService;
-    
+
     private DualListModel<LangList> languagesList;
-    
+
     private boolean profileChanged;
-    
-    
-    
+
     private String password;
     private String newPassword;
 
-
     private transient StreamedContent fileExport;
     private transient UploadedFile fileImport;
-    
+
     private int activeindex;
     private String navAdminStatus = "mainAdmin";
-    
-    
-    public AdminController(){
-        
+
+    public AdminController() {
+
     }
-    
+
     @PostConstruct
-    public void init(){
-      
+    public void init() {
+
     }
-    
-    public void removeProfile(){
+
+    public void removeProfile() {
         getAdminProfileService().deleteProfile(getSelectedProfile());
         logout();
     }
@@ -88,28 +80,26 @@ public class AdminController implements Serializable{
         return getProfileService().getSelectedProfile();
     }
 
-   
-    
     public void navigateInAdmin(ActionEvent actionEvent) {
-        if(profileChanged){
-          FacesContext.getCurrentInstance().addMessage(null, 
-                  new FacesMessage(FacesMessage.SEVERITY_WARN, "Attention!", "Exist unsaved data"));  
-        }else{
+        if (profileChanged) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Attention!", "Exist unsaved data"));
+        } else {
             String page = actionEvent.getComponent().getId();
-            
+
             this.navAdminStatus = page;
             updateUpdater();
             RequestContext.getCurrentInstance().execute("updateOnSave();");
             //UtilSession.setNavStatus(navStatus);    
         }
     }
- 
+
     public void logout() {
-        if(profileChanged){
-          FacesContext.getCurrentInstance().addMessage(null, 
-                  new FacesMessage(FacesMessage.SEVERITY_WARN, "Attention!", "Exist unsaved data"));  
-        }else{
-        
+        if (profileChanged) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_WARN, "Attention!", "Exist unsaved data"));
+        } else {
+
             FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/" + getSelectedProfile().getProfileName());
@@ -119,12 +109,11 @@ public class AdminController implements Serializable{
         }
     }
 
-    
-    public Boolean getAdminPage(){
+    public Boolean getAdminPage() {
         boolean result = false;
-        if(getSelectedProfile() != null && UtilSession.getLoginName().equals(getSelectedProfile().getProfileName())){
+        if (getSelectedProfile() != null && UtilSession.getLoginName().equals(getSelectedProfile().getProfileName())) {
             result = true;
-        }else{
+        } else {
             try {
                 UtilSession.geExternalContext().redirect("/Andrey");
             } catch (IOException ex) {
@@ -133,7 +122,7 @@ public class AdminController implements Serializable{
         }
         return result;
     }
-    
+
     public String getNavAdminStatus() {
         return navAdminStatus;
     }
@@ -141,27 +130,27 @@ public class AdminController implements Serializable{
     public void setNavAdminStatus(String navAdminStatus) {
         this.navAdminStatus = navAdminStatus;
     }
-    
-    public void saveSelectedProfile(){
-        try{
+
+    public void saveSelectedProfile() {
+        try {
             getSelectedProfile().save();
             setProfileChanged(false);
             RequestContext.getCurrentInstance().execute("updateOnSave();");
-        }catch(ValidationException e){
-            e.getValidationResult().getFailures().stream().forEach(f ->{
-                FacesContext.getCurrentInstance().addMessage(null, 
-                  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Attention!", f.getDescription()));
+        } catch (ValidationException e) {
+            e.getValidationResult().getFailures().stream().forEach(f -> {
+                FacesContext.getCurrentInstance().addMessage(null,
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "Attention!", f.getDescription()));
             });
-            
+
         }
 
     }
 
     @SuppressWarnings("unchecked")
-    public void changeActiveLang(TransferEvent e){      
-        if(e.isAdd()){
-            getSelectedProfile().addLanguages((List<LangList>) e.getItems());            
-        }else{
+    public void changeActiveLang(TransferEvent e) {
+        if (e.isAdd()) {
+            getSelectedProfile().addLanguages((List<LangList>) e.getItems());
+        } else {
             getSelectedProfile().deleteLanguages((List<LangList>) e.getItems());
         }
         setProfileChanged(true);
@@ -169,7 +158,7 @@ public class AdminController implements Serializable{
 
     @SuppressWarnings("unchecked")
     public DualListModel<LangList> getLanguagesList() {
-        
+
         List fL = new ArrayList();
         fL.addAll(getSelectedProfile().getLangFromSysstem());
         List pL = getSelectedProfile().getAllLangFromProfile();
@@ -181,8 +170,8 @@ public class AdminController implements Serializable{
     public void setLanguagesList(DualListModel<LangList> languagesList) {
         this.languagesList = languagesList;
     }
-    
-    public void photoUploadListener(FileUploadEvent event){
+
+    public void photoUploadListener(FileUploadEvent event) {
         try {
             getSelectedProfile().setPhoto(IOUtils.toByteArray(event.getFile().getInputstream()));
             setProfileChanged(true);
@@ -190,16 +179,16 @@ public class AdminController implements Serializable{
             Logger.getLogger(ApplicationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void cancelChanges(){
+
+    public void cancelChanges() {
         getSelectedProfile().rollbackChanges();
         setProfileChanged(false);
     }
-    
-    public void changePassword(){
-        if (!getSelectedProfile().checkLogin(password)){
+
+    public void changePassword() {
+        if (!getSelectedProfile().checkLogin(password)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!", "Authorization failed"));
-        }else{
+        } else {
             getSelectedProfile().setPassword(newPassword);
             saveSelectedProfile();
             password = "";
@@ -207,15 +196,15 @@ public class AdminController implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Success.", "Your password has been changed!"));
         }
     }
-    
-    public void exportProfile(){
-        fileExport = new DefaultStreamedContent(getSelectedProfile().getExportByteArrayInputStream(), 
+
+    public void exportProfile() {
+        fileExport = new DefaultStreamedContent(getSelectedProfile().getExportByteArrayInputStream(),
                 "text/xml",
                 getSelectedProfile().getProfileName() + ".xml");
     }
-    
-    public void importProfile(FileUploadEvent event){
-     
+
+    public void importProfile(FileUploadEvent event) {
+
         try {
             getSelectedProfile().importFromInputStream(event.getFile().getInputstream());
             logout();
@@ -225,7 +214,7 @@ public class AdminController implements Serializable{
     }
 
     public boolean isProfileChanged() {
-        
+
         return profileChanged;
     }
 
@@ -249,8 +238,6 @@ public class AdminController implements Serializable{
         this.newPassword = newPassword;
     }
 
-
-
     public int getActiveindex() {
         return activeindex;
     }
@@ -258,7 +245,6 @@ public class AdminController implements Serializable{
     public void setActiveindex(int activeindex) {
         this.activeindex = activeindex;
     }
-
 
     public StreamedContent getFileExport() {
         return fileExport;
@@ -272,8 +258,7 @@ public class AdminController implements Serializable{
         this.fileImport = fileImport;
     }
 
-   
-    public void updateUpdater(){
+    public void updateUpdater() {
         RequestContext.getCurrentInstance().execute("updateUpdater();");
     }
 
@@ -292,10 +277,9 @@ public class AdminController implements Serializable{
     public void setProfileService(ProfileService profileService) {
         this.profileService = profileService;
     }
-    
-    public List<LangList> getLangList(){
+
+    public List<LangList> getLangList() {
         return getAdminProfileService().getLangListService().getEntityList();
     }
-    
-    
+
 }

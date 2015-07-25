@@ -94,11 +94,19 @@
                         />
                     
                     <p:commandButton 
-                        actionListener="#{systemController.invalidateAll()}"
-                        icon="fa fa-times"
+                        
+                        icon="fa fa-plus"
                         update="monitorSession"
                         styleClass="editTableIcon ajaxTrigger"
                         />
+                    
+                        <p:commandButton 
+                        
+                        icon="fa fa-send"
+                        update="monitorSession"
+                        styleClass="editTableIcon ajaxTrigger"
+                        />
+                    
                 </f:facet>
             </p:dataTable>
             <p:remoteCommand name="sessionUpdater" update="monitorSession" oncomplete="sessionUpdater();" delay="10000000" autoRun="true"/>
@@ -193,7 +201,7 @@
             </f:facet>
             
             <p:dataTable id="languageSession"
-                        value="#{systemController.getLanguageList()}"
+                         value="#{systemController.languageList}"
                         var="language"
                         paginator="true"
                         rows="10"
@@ -327,7 +335,7 @@
                 <h:outputText value=" Profiles" class="fa fa-black fa-users"/>
             </f:facet>
             <p:dataTable id="profileSession"
-                             value="#{systemController.getProfileList()}"
+                         value="#{systemController.profileList}"
                              var="profile"
                              paginator="true"
                              rows="10"
