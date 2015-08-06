@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+        <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+                <layout class="org.apache.log4j.PatternLayout">
+                        <param name="ConversionPattern"
+                                value="%p - %C{1}.%M(%L) | %m%n" />
+                </layout>
+        </appender>
+
+        <logger name="org.apache">
+                <level value="INFO" />
+        </logger>
+
+        <logger name="org.apache.cayenne">
+                <level value="WARN" />
+        </logger>
+        <!--
+                runtime.log.logsystem.class = org.apache.velocity.runtime.log.Log4JLogSystem
+                runtime.log.logsystem.log4j.category=org.apache.velocity.runtime.log.Log4JLogSystem
+                log4j.logger.org.apache.velocity.runtime.log.Log4JLogSystem=WARN
+                log4j.logger.net.sourceforge.orbroker=WARN
+                log4j.logger.com.gilbertoca.gfi.service=DEBUG
+                runtime.log = /tmp/velocity.log
+                runtime.log.error.stacktrace = false
+                runtime.log.warn.stacktrace = false
+                runtime.log.info.stacktrace = false
+                runtime.log.invalid.reference = true
+                runtime.log.logsystem.log4j.pattern=%d - %m%n
+                runtime.log.logsystem.log4j.file.size=100000
+                runtime.log.logsystem.log4j.file.backups=1          
+                <logger name="org.hibernate.SQL">
+                <level value="DEBUG"/>
+                </logger>
+        -->
+
+        <root>
+                <level value="INFO" />
+                <appender-ref ref="CONSOLE" />
+        </root>
+
+</log4j:configuration>

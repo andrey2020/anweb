@@ -135,7 +135,7 @@
                     <h:outputText value="#{history.getAgentLang()}" />
                 </p:column>                
                 <p:column headerText="IP" sortBy="#{history.getIpaddr()}" style="width: 100px;">
-                    <h:outputText value="#{history.getIpaddr()}" />
+                    <p:commandButton ajax="true" value="#{history.getIpaddr()}" oncomplete="window.open('http://ipinfo.io/#{history.getIpaddr()}')" />
                 </p:column>
                 <p:column headerText="Last Accessed Time" sortBy="#{history.getLastAccessFormat()}" style="width: 100px;">
                     <h:outputText value="#{history.getLastAccessFormat()}" />
